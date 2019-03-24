@@ -1,0 +1,80 @@
+/home/redisWorkSpace/bin/redis-cli -h 192.168.189.128 -p 6379   进入客户端
+ 
+select 1                       选择数据库
+flushall                       清空全部的缓存
+flushdb                        清空当前的数据库（字典）
+expire name 20   name将在20秒后删除
+ttl name         查看name还有多久生存时间（-2表示已经删除）
+keys *name*	 支持左右模糊查询
+exists name      判断是否有name，有返回1，无返回0	
+type name        返回name的类型
+dbsize      	 返回当前字典中有多少个key
+info		 显示redis配置信息
+
+字符串命令-----------------------------------------------------------------------
+
+set name aber 
+get name
+append name
+strlen                        获取字符串长度
+mset name aber address jilin  设置对个键值对
+mget name address             获取多个键值对
+
+keys *                       获取全部的键值对k
+del name                     啊删除name键值对
+setnx name  aber111          如果已经存在name键值对不存储，反则存储
+setex tel 5 13161576244      设置tel键值对5秒时间，过5秒后自动清除
+
+
+hash命令--------------------------------------------------------------------------
+//hash存储的形式是user一个大键，其中包含多个小健，多个小健对应多个键值(user指一个hash大键)
+hset user username aber     		设置单个小健值对   返回0.表示修改，1.表示添加
+hget user username          		获取单个小键值对值
+hmset user age 20 address jilin   	设置多个小键值对
+hmget user username age address  	获取多个小键值对
+del user                  	 	删除user
+hgetall user               		返回user中的全部属性和属性值
+hexists user name          		判断user中是否存在name字段，0.表示不存在，1.存在
+hdel user name age         		删除user中多个个属性
+hkeys user                 		获取user全部的属性名
+hvals user                 		获取user全部的属性值
+hlen user                  		获取user中有几个属性
+
+list-------------------------------------------------------------------------------
+lpush  list 1 2 3         从左端压栈
+rpush list 5 6 7   	从右端压栈
+lpop   list        	从左端出栈
+rpop   list        	从右端出栈
+llen   list        	查看list的长度
+lrange list  0  2  	截取lsit中从第一个索引到第二个索引（后一个参数为-1表示全部取出）不是出站是取出。
+lrem list count 100 	如果count》0时，会从左边开始删除值为100的count个
+		    	如果count《0时，会从右边开始删除值为100的count个
+		    	如果count=0时，会全部删除值为100的键。
+		  	返回的删除的数量
+lset list 0 1000  	将list的第一个值修改为1000
+lindex list 0     	获取list第一个值
+ltrim list 0 2     	删除0到2区间之外的值
+
+
+set--------------------------------------------------------------------------------
+sadd myset 1 2 3 3	添加set类型的数据myset值为1 2 3 ，由于set不能重复，所以两个3只能保存一个
+srem myset 3      	删除myset中值为3的数据
+smembers myset    	遍历set
+sismember myset 1 	判断myset中是否有值1，如果有返回1，反则0
+
+
+sortset----------------------------------------------------------------------------
+zadd sortsets 10 aber 20 wang 30 bo     添加名为sortset的sortset类型数据，分数分别为10 20 30 值分别为 aber wang bo
+zscore sortsets aber  			获取分数
+zrange sortsets 0 2    			获取sortsets中从0到2（按照从小到大的顺序）（2改成-1是全部获取）
+zrevrange sortsets 0 2 			获取sortsets中从0到2（按照从大到校的顺序）（2改成-1是全部获取）
+zrangebyscore sortsets 30 40 		根据分数范围获取在范围内全部的值（30-40）
+zrangebyscore sortsets 30 40 		根据分数范围获取在范围内全部的值和分数（30-40）
+zincrby sortsets  5  aber 1		给sortsets中的aber加5分，之前是10，现在就变成15。如之前没有aber则生辰一个分数为5 值为aber的数据
+zcard sortsets				获取sortsets中元素的个数
+zsount sortsets 20 30 			获取sortsets中分数在20 到30 的值
+zremrangeByRank sortsets 0 1 		删除sortsets中0到1
+zrem sortsets aber			删除值为aber的数据
+zrank sortsets aber			aber在sortsets中排序是第多少（从0开始）
+
+

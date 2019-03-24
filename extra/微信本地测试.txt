@@ -1,0 +1,84 @@
+String userId = "";
+String payType ="6";//第三方收款
+String mainMakeType = "1";//0一码一票,1一码多票
+String makeFlag = "0";//票类型0电子票1纸质票
+String tradeNo = order_id;
+String state = "1";//0待支付1已支付
+
+
+
+
+
+http://localhost:8080/cloudticketapi/lvmama/apply_code
+http://47.94.238.46/cloudticketapi/lvmama/apply_code
+
+{ 
+    "num": "1", 
+    "serialNo": "5678", 
+    "settlePrice": "12", 
+    "sign": "3B66DE25C499D7AD05CF7C0FE0E05747", 
+    "supplierGoodsId": "4f101238b8c245089455b6ebec700f51", 
+"timestamp": "20160419142615", 
+"visitTime": "20160520000000",
+    "uid": "lvmama1234", 
+ 	"password": "85a61c849", 
+    "contacts": { 
+        "idNum": "123456789", 
+        "idType": "ID_CARD", 
+        "mobile": "13161576244", 
+        "name": "购票人"
+    }, 
+    "travellerList": [ 
+        { 
+            "idNum": "4444444", 
+            "idType": "ID_CARD", 
+            "mobile": "13161576244", 
+            "name": "游玩人1"
+        }, 
+        { 
+            "idNum": "4444444", 
+            "idType": "ID_CARD", 
+            "mobile": "13161576244", 
+            "name": "游玩人2"
+        }
+    ]
+}
+YD-208f1842bb104d3caf43a7b8d1a68cf3
+
+
+同城下单测试
+http://47.94.238.46/cloudticketapi/tongCheng/CreateOrder
+http://localhost:8080/cloudticketapi/tongCheng/CreateOrder
+{
+    "orderSerialId": "sz591bc8d91649c8733752003",
+    "productNo": "8cf59071aec545f3ae94ac06ace384dd",
+    "sceneryNo": "1000000236",
+    "payType": 1,
+    "tickets": 2,
+    "price": 3000,
+    "contractPrice": 1000,
+    "isEvent": 0,
+    "eventId": "",
+    "bookName": "下单测试套票",
+    "bookMobile": "18262035263",
+    "idCard": "18262035263-222",
+    "travelDate": "2017-05-17",
+    "visitPerson": [
+        {
+            "name": "孔华坤",
+            "mobile": "15938019932",
+            "idCard": "15938019932-333"
+        }
+    ]
+}
+
+
+{site=13, operatorDatetime=0001-11-02, olddeviceId=11, 
+groupId=442691407006662656, 
+customerid=c8c66482ef6941368e6c0457c6ce6df7, 
+shopid=bec412fe0cfe410d9f21827b59900e5b,
+ id=bd62054fbf2441fdb86d95be84790c2a,
+ deviceId=11, machinesid=6847d19d8cd9486eaa9f5caa4a895ffb,
+ operatorId=09ae6243891b4e76b124ba022582a7b2}
+
+

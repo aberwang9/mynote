@@ -1,0 +1,11 @@
+dispacher  调度员
+wrapper   包装员
+decoration 装饰品
+decimal 十进制的
+conditional 有条件的
+label 标签
+issues  出口，放出
+license  许可证，执照，同意
+silent 沉默的无言的
+commented 评论
+crash  碰撞

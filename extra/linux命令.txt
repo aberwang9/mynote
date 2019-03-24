@@ -1,0 +1,65 @@
+ps -ef |grep java 查看java线程
+kill -9 28946 结束进程
+sh startup.sh 开启程序
+tail -f catalina.out 查看当前日志
+ctrl+alt+F2  进入命令行模式
+
+dos命令
+打war包
+项目目录 jar -cvf cloudticket.war ./*
+unzip /lost+found/dy-cloudticket-api-web.zip -d /home/tomcat/apache-tomcat-8.5.8/webapps/cloudticketapi/
+
+ 选择项目目录/文件 按 ALT+SHIFT +W 
+
+
+查看jvm小进程
+jps -l
+jstack -l
+
+
+javap 可以查看字节码
+
+
+linux命令：
+traceroute   www.baidu.com  跟踪本机到目标主机所经过的全部路由   windows  命令是：tracert
+telnet
+netstat
+nmcli
+
+
+mkdir /usr/local/java 新建目录
+mv jdk1.8.0_161 /usr/local/java/ 移动文件   
+mv A B  将目录A重命名为B 
+vim /etc/profile  vim编辑器
+ ls -a 查看全部文件
+cat  /usr/local/con.cfg 查看文件内容
+
+tar -xzvf jdk-8u181-linux-x64.tar.gz 解压到当前目录
+
+
+ll  查看当前目录下的文件的属性
+
+
+
+uname -a 查看电脑与操作系统信息
+cat /etc/issue 显示的是发行版本
+cat /proc/version 显示的是运行的内核版本
+lsb_release -a 查看发行版本
+
+
+yum install gcc-c++ 安装c++环境
+
+su root  转换身份
+
+tzselect
+
+reboot  普通重启
+halt    立即关机（poweroff）
+shutdown -r now   （立即重启）
+shutdown -r 10   10分钟后重启
+shutdown -r  20：35 在20：35重启
+shutdown -h now  立即关机
+shutdown -h 10   10分钟后关机
+
+xz -d  ****.xz 解压xz文件
+xz -z  ***     压缩文件 
