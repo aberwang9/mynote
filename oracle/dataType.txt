@@ -1,18 +1,18 @@
-1.char(),�����ַ�����
+1.char(),定长字符串；
 
 
-2.varchar2(),�䳤�ַ�����
+2.varchar2(),变长字符串；
 
 
-3.number(),�ɱ�ʾ����Ҳ�ɱ�ʾС����number(n):n��ʾ������Ч���֣�number(n,m)��ʾС��ռmλ������ռn-mλ��
+3.number(),可表示整数也可表示小数，number(n):n表示的是有效数字；number(n,m)表示小数占m位，整数占n-m位；
 
-4.date,���ڣ������������գ�yyyy-mm-dd����Ҳ������������ʱ���루yyyy-mm-dd hh24-mi-ss����
-
-
-5.timestamp��ʱ�������ȷ����ĺ�9λ��timestamp(n):n��ʾ�뼶Ƭ�εľ�ȷ�ȣ�
+4.date,日期，可以是年月日（yyyy-mm-dd），也可以是年月日时分秒（yyyy-mm-dd hh24-mi-ss）；
 
 
-6.clob���洢���ı����ݣ������Ա���4G���֣�
+5.timestamp，时间戳，精确到秒的后9位，timestamp(n):n表示秒级片段的精确度；
 
 
-7.blob,�洢���������ݣ������Ա���4G���֣����Ա������ֺ�ͼƬ��������
+6.clob，存储大文本数据，最多可以保存4G文字；
+
+
+7.blob,存储二进制数据，最多可以保存4G文字，可以保存文字和图片；很少用

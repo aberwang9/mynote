@@ -1,0 +1,19 @@
+pqgrid笔记
+对于pqgrid的表格数据，会把全部的数据一次性的获取（根据page参数，例如一页十条数据，多个页数据等），然后内部再分页。
+分页的规则按照page相关的参数，如果有100调数据   $(this).data().index;  获取当前数据的行数index（例如13），但是在显示的时候会有一个问题，
+那么要获取第13行（如果一页只显示10条，第13行会在第2页的第3行显示）的数据有以下方式：
+1.有选择框：
+var grid = tablePdIstr.pqGrid("getInstance").grid;
+var selectRow = grid.SelectRow().getSelection();
+
+2.行内链接：(看完师傅的用法得到的)
+var index = $(this).data().index;
+var rPP = tablePdIstr.pqGrid("option", "pageModel").rPP;//每页条数
+var curPage = tablePdIstr.pqGrid("option", "pageModel").curPage ;//第几页
+index=index-rpp*curPage;
+
+（自己看页面元素获得的）
+var  tempIndex=$(this).data().index;
+var currPage=$(".pq-page-current").val();
+var pageLimit=$(".pq-page-select").val();
+var index=tempIndex-(currPage-1)*pageLimit;

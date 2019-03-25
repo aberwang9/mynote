@@ -1,9 +1,9 @@
 String userId = "";
-String payType ="6";//µÚÈı·½ÊÕ¿î
-String mainMakeType = "1";//0Ò»ÂëÒ»Æ±,1Ò»Âë¶àÆ±
-String makeFlag = "0";//Æ±ÀàĞÍ0µç×ÓÆ±1Ö½ÖÊÆ±
+String payType ="6";//ç¬¬ä¸‰æ–¹æ”¶æ¬¾
+String mainMakeType = "1";//0ä¸€ç ä¸€ç¥¨,1ä¸€ç å¤šç¥¨
+String makeFlag = "0";//ç¥¨ç±»å‹0ç”µå­ç¥¨1çº¸è´¨ç¥¨
 String tradeNo = order_id;
-String state = "1";//0´ıÖ§¸¶1ÒÑÖ§¸¶
+String state = "1";//0å¾…æ”¯ä»˜1å·²æ”¯ä»˜
 
 
 
@@ -26,27 +26,27 @@ http://47.94.238.46/cloudticketapi/lvmama/apply_code
         "idNum": "123456789", 
         "idType": "ID_CARD", 
         "mobile": "13161576244", 
-        "name": "¹ºÆ±ÈË"
+        "name": "è´­ç¥¨äºº"
     }, 
     "travellerList": [ 
         { 
             "idNum": "4444444", 
             "idType": "ID_CARD", 
             "mobile": "13161576244", 
-            "name": "ÓÎÍæÈË1"
+            "name": "æ¸¸ç©äºº1"
         }, 
         { 
             "idNum": "4444444", 
             "idType": "ID_CARD", 
             "mobile": "13161576244", 
-            "name": "ÓÎÍæÈË2"
+            "name": "æ¸¸ç©äºº2"
         }
     ]
 }
 YD-208f1842bb104d3caf43a7b8d1a68cf3
 
 
-Í¬³ÇÏÂµ¥²âÊÔ
+åŒåŸä¸‹å•æµ‹è¯•
 http://47.94.238.46/cloudticketapi/tongCheng/CreateOrder
 http://localhost:8080/cloudticketapi/tongCheng/CreateOrder
 {
@@ -59,13 +59,13 @@ http://localhost:8080/cloudticketapi/tongCheng/CreateOrder
     "contractPrice": 1000,
     "isEvent": 0,
     "eventId": "",
-    "bookName": "ÏÂµ¥²âÊÔÌ×Æ±",
+    "bookName": "ä¸‹å•æµ‹è¯•å¥—ç¥¨",
     "bookMobile": "18262035263",
     "idCard": "18262035263-222",
     "travelDate": "2017-05-17",
     "visitPerson": [
         {
-            "name": "¿×»ªÀ¤",
+            "name": "å­”åå¤",
             "mobile": "15938019932",
             "idCard": "15938019932-333"
         }
