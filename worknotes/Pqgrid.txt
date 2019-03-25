@@ -10,7 +10,7 @@ var selectRow = grid.SelectRow().getSelection();
 var index = $(this).data().index;
 var rPP = tablePdIstr.pqGrid("option", "pageModel").rPP;//每页条数
 var curPage = tablePdIstr.pqGrid("option", "pageModel").curPage ;//第几页
-index=index-rpp*curPage;
+index=index-rPP*(curPage-1);
 
 （自己看页面元素获得的）
 var  tempIndex=$(this).data().index;
