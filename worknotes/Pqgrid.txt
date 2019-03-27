@@ -7,7 +7,7 @@ var grid = tablePdIstr.pqGrid("getInstance").grid;
 var selectRow = grid.SelectRow().getSelection();
 
 2.行内链接：(看完师傅的用法得到的)
-var index = $(this).data().index;
+var index = $(this).data().index;   //获取当前行在全部的数据（全部）的索引，从0开始
 var rPP = tablePdIstr.pqGrid("option", "pageModel").rPP;//每页条数
 var curPage = tablePdIstr.pqGrid("option", "pageModel").curPage ;//第几页
 index=index-rPP*(curPage-1);
@@ -17,3 +17,11 @@ var  tempIndex=$(this).data().index;
 var currPage=$(".pq-page-current").val();
 var pageLimit=$(".pq-page-select").val();
 var index=tempIndex-(currPage-1)*pageLimit;
+ 
+ 
+problem；
+if (index > rPP) {//把   >  改成 >=  就可以了
+	row = tfItemTable.pqGrid("getRowData", {rowIndxPage: index%rPP});
+} else {
+	row=tfItemTable.pqGrid("getRowData", {rowIndxPage: index});
+}

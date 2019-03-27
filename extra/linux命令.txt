@@ -63,3 +63,5 @@ shutdown -h 10   10分钟后关机
 
 xz -d  ****.xz 解压xz文件
 xz -z  ***     压缩文件 
+
+linux清屏命令   clear  //向上还可以翻滚
