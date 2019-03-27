@@ -1,4 +1,4 @@
-oracle 的执行顺寻如下：
+mysql oracle 的执行顺寻如下：
 		优化总结：
 		from 小表放在后面
 		where 能剔除大量数据的放在下面
