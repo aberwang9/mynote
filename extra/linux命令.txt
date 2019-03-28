@@ -66,6 +66,7 @@ xz -z  ***     压缩文件
 
 linux清屏命令   clear  //向上还可以翻滚
 
+
 rpm 命令有五种操作模式，分别为：安装、卸载、升级、查询和验证。
 	1 #rpm -i example.rpm 安装 example.rpm 包；
 	2 #rpm -iv example.rpm 安装 example.rpm 包并在安装过程中显示正在安装的文件信息；
