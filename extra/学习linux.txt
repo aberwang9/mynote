@@ -1,0 +1,72 @@
+pwd   			查看当前目录
+clear     		清屏
+touch			创建文件
+rm  	-rf		删除文件或文件夹   -r（表示删除含有子目录） -f（忽略是否删除提示）
+mv			移动文件
+echo holle > text.exe 覆盖原来的文件内容
+echo holle>> text.exe 追加holle
+
+lang=utf-8 修改界面编码
+date 查看当前时间
+
+
+groups 查看当前登录用户的组内成员
+groups test 查看test用户所在的组,以及组内成员
+whoami 查看当前登录用户名
+
+
+ls -l /home/redisWorkSpace/config/redis.conf   查看文件的权限
+-rw-r--r--. 1 root root 41403 Nov  2 15:19 /home/redisWorkSpace/config/redis.conf
+-rw-r--r--可以分为- rw- r-- r--
+第一个 - ，标识这是一个文件，d标识目录，之后9位三个一组
+（第一组表示user用u标识（user），第二组表示组的权限用g标识(group)，第三组表示其他用户用o标识（other））
+r（可读，数值4）w（可写，数值2）x（可执行，数值1）.
+chown -R  aber:aber text.exe  标识修改text.exe,所属的用户和组，R(表示继承)，第一个aber表示用户，第二个aber表示组（-R包含目录下所有和目录和文件）
+chmod o+w text.exe    标识在text.exe上添加写权限
+chmod u=rwx text.exe  标识在text.exe上添加权限
+chmod 744 text.exe    标识在text.exe上添加权限
+
+
+ifup eth0 启动网卡eth0
+cd /etc/sysconfig/network-scripts/   网卡配置文件所在的目录
+修改linux的ip
+编辑ifcfg-eth0文件，将bootproto='dhcp'，修改为static，再加一个属性，IPADDR=192.168.1.110，NETMASK=255.255.2555.0，GATEWAY=192.168.1.2
+/etc/init.d/network   restart  重启网卡
+
+
+wget www.baidu.com  访问网站
+
+tail -fn 100 /var/log/messages   查看系统日志
+getenforce     查看selinux的级别（ Enforcing 1强制模式，Permissive 0警告模式，Disabled  关闭模式）
+
+
+groupadd git   添加组
+usermod -a -G apache cnzhx  将用户cnzhx追加（-a）添加到apache组中（-G不删除user之前的组）
+
+centos7.3是使用firewall作为防火墙
+
+wget -P /root 网址   下载文档命令
+rpm -ivh example.rpm 安装 example.rpm 包并在安装过程中显示正在安装的文件信息及安装进度
+
+
+tar –cvf jpg.tar *.jpg  将目录里所有jpg文件打包成tar.jpg
+tar –czf jpg.tar.gz *.jpg   将目录里所有jpg文件打包成jpg.tar后，并且将其用gzip压缩，生成一个gzip压缩过的包，命名为jpg.tar.gz
+tar –cjf jpg.tar.bz2 *.jpg 将目录里所有jpg文件打包成jpg.tar后，并且将其用bzip2压缩，生成一个bzip2压缩过的包，命名为jpg.tar.bz2
+tar –cZf jpg.tar.Z *.jpg   将目录里所有jpg文件打包成jpg.tar后，并且将其用compress压缩，生成一个umcompress压缩过的包，命名为jpg.tar.Z
+rar a jpg.rar *.jpg rar格式的压缩，需要先下载rar for linux
+zip jpg.zip *.jpg   zip格式的压缩，需要先下载zip for linux 
+
+tar –xvf file.tar  解压 tar包
+tar -xzvf file.tar.gz 解压tar.gz
+tar -xjvf file.tar.bz2   解压 tar.bz2
+tar –xZvf file.tar.Z   解压tar.Z
+unrar e file.rar 解压rar
+unzip file.zip 解压zip
+
+
+yum 的使用方法：https://blog.csdn.net/zengmingen/article/details/78225612
+yum list installed   查看已安装的rpm包
+rpm -qa|grep redis   查看安装的软件包全名
+rpm -ql redis-3.2.10-2.el7.x86_64     查看软件安装目录
+  
+find / -name httpd.conf   查找全部文件夹中的httpd.conf文件
