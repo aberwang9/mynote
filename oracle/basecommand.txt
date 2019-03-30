@@ -1,0 +1,24 @@
+　　
+
+索引的种类有：(https://www.cnblogs.com/iliuyuet/p/4431464.html)
+		1. B-TREE索引  （是一种平衡树，子叶节点存放整行数据）
+			创建索引
+			create index idx_emp1_ename on emp1(ename);
+			创建唯一索引
+			create unique index idx_uq_emp1_empno on emp1(empno) tablespace mypl;
+			
+			
+		2. bitmap索引  (结构跟B_TREE类似，子节点存放结构{data，StartRowID，endRowID，101010101010}，比如性别，等枚举类型的)
+			位图索引适合唯一值很少的列,也就是重复值很多的列
+			sql：创建位图索引
+			create bitmap index idx_bm_emp1_deptno on empl(deptno);
+			
+			
+		3. hsah索引 需要使用hash集群  {hsah索引,集群索引,数据}
+			
+		
+		4. 聚族索引  聚族索引的组织顺序和数据本身的组织顺序是一致的
+		
+		
+		5. 非聚族索引  索引组织顺序和数据组织顺序不一致
+		

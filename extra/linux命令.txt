@@ -1,65 +1,74 @@
-ps -ef |grep java ²é¿´javaÏß³Ì
-kill -9 28946 ½áÊø½ø³Ì
-sh startup.sh ¿ªÆô³ÌĞò
-tail -f catalina.out ²é¿´µ±Ç°ÈÕÖ¾
-ctrl+alt+F2  ½øÈëÃüÁîĞĞÄ£Ê½
+ps -ef |grep java æŸ¥çœ‹javaçº¿ç¨‹
+kill -9 28946 ç»“æŸè¿›ç¨‹
+sh startup.sh å¼€å¯ç¨‹åº
+tail -f catalina.out æŸ¥çœ‹å½“å‰æ—¥å¿—
+ctrl+alt+F2  è¿›å…¥å‘½ä»¤è¡Œæ¨¡å¼
 
-dosÃüÁî
-´òwar°ü
-ÏîÄ¿Ä¿Â¼ jar -cvf cloudticket.war ./*
+doså‘½ä»¤
+æ‰“waråŒ…
+é¡¹ç›®ç›®å½• jar -cvf cloudticket.war ./*
 unzip /lost+found/dy-cloudticket-api-web.zip -d /home/tomcat/apache-tomcat-8.5.8/webapps/cloudticketapi/
 
- Ñ¡ÔñÏîÄ¿Ä¿Â¼/ÎÄ¼ş °´ ALT+SHIFT +W 
+ é€‰æ‹©é¡¹ç›®ç›®å½•/æ–‡ä»¶ æŒ‰ ALT+SHIFT +W 
 
 
-²é¿´jvmĞ¡½ø³Ì
+æŸ¥çœ‹jvmå°è¿›ç¨‹
 jps -l
 jstack -l
 
 
-javap ¿ÉÒÔ²é¿´×Ö½ÚÂë
+javap å¯ä»¥æŸ¥çœ‹å­—èŠ‚ç 
 
 
-linuxÃüÁî£º
-traceroute   www.baidu.com  ¸ú×Ù±¾»úµ½Ä¿±êÖ÷»úËù¾­¹ıµÄÈ«²¿Â·ÓÉ   windows  ÃüÁîÊÇ£ºtracert
+linuxå‘½ä»¤ï¼š
+traceroute   www.baidu.com  è·Ÿè¸ªæœ¬æœºåˆ°ç›®æ ‡ä¸»æœºæ‰€ç»è¿‡çš„å…¨éƒ¨è·¯ç”±   windows  å‘½ä»¤æ˜¯ï¼štracert
 telnet
 netstat
 nmcli
 
 
-mkdir /usr/local/java ĞÂ½¨Ä¿Â¼
-mv jdk1.8.0_161 /usr/local/java/ ÒÆ¶¯ÎÄ¼ş   
-mv A B  ½«Ä¿Â¼AÖØÃüÃûÎªB 
-vim /etc/profile  vim±à¼­Æ÷
- ls -a ²é¿´È«²¿ÎÄ¼ş
-cat  /usr/local/con.cfg ²é¿´ÎÄ¼şÄÚÈİ
+mkdir /usr/local/java æ–°å»ºç›®å½•
+mv jdk1.8.0_161 /usr/local/java/ ç§»åŠ¨æ–‡ä»¶   
+mv A B  å°†ç›®å½•Aé‡å‘½åä¸ºB 
+vim /etc/profile  vimç¼–è¾‘å™¨
+ ls -a æŸ¥çœ‹å…¨éƒ¨æ–‡ä»¶
+cat  /usr/local/con.cfg æŸ¥çœ‹æ–‡ä»¶å†…å®¹
 
-tar -xzvf jdk-8u181-linux-x64.tar.gz ½âÑ¹µ½µ±Ç°Ä¿Â¼
-
-
-ll  ²é¿´µ±Ç°Ä¿Â¼ÏÂµÄÎÄ¼şµÄÊôĞÔ
+tar -xzvf jdk-8u181-linux-x64.tar.gz è§£å‹åˆ°å½“å‰ç›®å½•
 
 
-
-uname -a ²é¿´µçÄÔÓë²Ù×÷ÏµÍ³ĞÅÏ¢
-cat /etc/issue ÏÔÊ¾µÄÊÇ·¢ĞĞ°æ±¾
-cat /proc/version ÏÔÊ¾µÄÊÇÔËĞĞµÄÄÚºË°æ±¾
-lsb_release -a ²é¿´·¢ĞĞ°æ±¾
+ll  æŸ¥çœ‹å½“å‰ç›®å½•ä¸‹çš„æ–‡ä»¶çš„å±æ€§
 
 
-yum install gcc-c++ °²×°c++»·¾³
 
-su root  ×ª»»Éí·İ
+uname -a æŸ¥çœ‹ç”µè„‘ä¸æ“ä½œç³»ç»Ÿä¿¡æ¯
+cat /etc/issue æ˜¾ç¤ºçš„æ˜¯å‘è¡Œç‰ˆæœ¬
+cat /proc/version æ˜¾ç¤ºçš„æ˜¯è¿è¡Œçš„å†…æ ¸ç‰ˆæœ¬
+lsb_release -a æŸ¥çœ‹å‘è¡Œç‰ˆæœ¬
+
+
+yum install gcc-c++ å®‰è£…c++ç¯å¢ƒ
+
+su root  è½¬æ¢èº«ä»½
 
 tzselect
 
-reboot  ÆÕÍ¨ÖØÆô
-halt    Á¢¼´¹Ø»ú£¨poweroff£©
-shutdown -r now   £¨Á¢¼´ÖØÆô£©
-shutdown -r 10   10·ÖÖÓºóÖØÆô
-shutdown -r  20£º35 ÔÚ20£º35ÖØÆô
-shutdown -h now  Á¢¼´¹Ø»ú
-shutdown -h 10   10·ÖÖÓºó¹Ø»ú
+reboot  æ™®é€šé‡å¯
+halt    ç«‹å³å…³æœºï¼ˆpoweroffï¼‰
+shutdown -r now   ï¼ˆç«‹å³é‡å¯ï¼‰
+shutdown -r 10   10åˆ†é’Ÿåé‡å¯
+shutdown -r  20ï¼š35 åœ¨20ï¼š35é‡å¯
+shutdown -h now  ç«‹å³å…³æœº
+shutdown -h 10   10åˆ†é’Ÿåå…³æœº
 
-xz -d  ****.xz ½âÑ¹xzÎÄ¼ş
-xz -z  ***     Ñ¹ËõÎÄ¼ş 
+xz -d  ****.xz è§£å‹xzæ–‡ä»¶
+xz -z  ***     å‹ç¼©æ–‡ä»¶ 
+
+linuxæ¸…å±å‘½ä»¤   clear  //å‘ä¸Šè¿˜å¯ä»¥ç¿»æ»š
+
+
+rpm å‘½ä»¤æœ‰äº”ç§æ“ä½œæ¨¡å¼ï¼Œåˆ†åˆ«ä¸ºï¼šå®‰è£…ã€å¸è½½ã€å‡çº§ã€æŸ¥è¯¢å’ŒéªŒè¯ã€‚
+	1 #rpm -i example.rpm å®‰è£… example.rpm åŒ…ï¼›
+	2 #rpm -iv example.rpm å®‰è£… example.rpm åŒ…å¹¶åœ¨å®‰è£…è¿‡ç¨‹ä¸­æ˜¾ç¤ºæ­£åœ¨å®‰è£…çš„æ–‡ä»¶ä¿¡æ¯ï¼›
+	3 #rpm -ivh example.rpm å®‰è£… example.rpm åŒ…å¹¶åœ¨å®‰è£…è¿‡ç¨‹ä¸­æ˜¾ç¤ºæ­£åœ¨å®‰è£…çš„æ–‡ä»¶ä¿¡æ¯åŠå®‰è£…è¿›åº¦
+

@@ -1,11 +1,11 @@
-dispacher  µ÷¶ÈÔ±
-wrapper   °ü×°Ô±
-decoration ×°ÊÎÆ·
-decimal Ê®½øÖÆµÄ
-conditional ÓĞÌõ¼şµÄ
-label ±êÇ©
-issues  ³ö¿Ú£¬·Å³ö
-license  Ğí¿ÉÖ¤£¬Ö´ÕÕ£¬Í¬Òâ
-silent ³ÁÄ¬µÄÎŞÑÔµÄ
-commented ÆÀÂÛ
-crash  Åö×²
+dispacher  è°ƒåº¦å‘˜
+wrapper   åŒ…è£…å‘˜
+decoration è£…é¥°å“
+decimal åè¿›åˆ¶çš„
+conditional æœ‰æ¡ä»¶çš„
+label æ ‡ç­¾
+issues  å‡ºå£ï¼Œæ”¾å‡º
+license  è®¸å¯è¯ï¼Œæ‰§ç…§ï¼ŒåŒæ„
+silent æ²‰é»˜çš„æ— è¨€çš„
+commented è¯„è®º
+crash  ç¢°æ’

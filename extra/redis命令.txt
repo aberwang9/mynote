@@ -1,80 +1,80 @@
-/home/redisWorkSpace/bin/redis-cli -h 192.168.189.128 -p 6379   ½øÈë¿Í»§¶Ë
+/home/redisWorkSpace/bin/redis-cli -h 192.168.189.128 -p 6379   è¿›å…¥å®¢æˆ·ç«¯
  
-select 1                       Ñ¡ÔñÊı¾İ¿â
-flushall                       Çå¿ÕÈ«²¿µÄ»º´æ
-flushdb                        Çå¿Õµ±Ç°µÄÊı¾İ¿â£¨×Öµä£©
-expire name 20   name½«ÔÚ20ÃëºóÉ¾³ı
-ttl name         ²é¿´name»¹ÓĞ¶à¾ÃÉú´æÊ±¼ä£¨-2±íÊ¾ÒÑ¾­É¾³ı£©
-keys *name*	 Ö§³Ö×óÓÒÄ£ºı²éÑ¯
-exists name      ÅĞ¶ÏÊÇ·ñÓĞname£¬ÓĞ·µ»Ø1£¬ÎŞ·µ»Ø0	
-type name        ·µ»ØnameµÄÀàĞÍ
-dbsize      	 ·µ»Øµ±Ç°×ÖµäÖĞÓĞ¶àÉÙ¸ökey
-info		 ÏÔÊ¾redisÅäÖÃĞÅÏ¢
+select 1                       é€‰æ‹©æ•°æ®åº“
+flushall                       æ¸…ç©ºå…¨éƒ¨çš„ç¼“å­˜
+flushdb                        æ¸…ç©ºå½“å‰çš„æ•°æ®åº“ï¼ˆå­—å…¸ï¼‰
+expire name 20   nameå°†åœ¨20ç§’ååˆ é™¤
+ttl name         æŸ¥çœ‹nameè¿˜æœ‰å¤šä¹…ç”Ÿå­˜æ—¶é—´ï¼ˆ-2è¡¨ç¤ºå·²ç»åˆ é™¤ï¼‰
+keys *name*	 æ”¯æŒå·¦å³æ¨¡ç³ŠæŸ¥è¯¢
+exists name      åˆ¤æ–­æ˜¯å¦æœ‰nameï¼Œæœ‰è¿”å›1ï¼Œæ— è¿”å›0	
+type name        è¿”å›nameçš„ç±»å‹
+dbsize      	 è¿”å›å½“å‰å­—å…¸ä¸­æœ‰å¤šå°‘ä¸ªkey
+info		 æ˜¾ç¤ºredisé…ç½®ä¿¡æ¯
 
-×Ö·û´®ÃüÁî-----------------------------------------------------------------------
+å­—ç¬¦ä¸²å‘½ä»¤-----------------------------------------------------------------------
 
 set name aber 
 get name
 append name
-strlen                        »ñÈ¡×Ö·û´®³¤¶È
-mset name aber address jilin  ÉèÖÃ¶Ô¸ö¼üÖµ¶Ô
-mget name address             »ñÈ¡¶à¸ö¼üÖµ¶Ô
+strlen                        è·å–å­—ç¬¦ä¸²é•¿åº¦
+mset name aber address jilin  è®¾ç½®å¯¹ä¸ªé”®å€¼å¯¹
+mget name address             è·å–å¤šä¸ªé”®å€¼å¯¹
 
-keys *                       »ñÈ¡È«²¿µÄ¼üÖµ¶Ôk
-del name                     °¡É¾³ıname¼üÖµ¶Ô
-setnx name  aber111          Èç¹ûÒÑ¾­´æÔÚname¼üÖµ¶Ô²»´æ´¢£¬·´Ôò´æ´¢
-setex tel 5 13161576244      ÉèÖÃtel¼üÖµ¶Ô5ÃëÊ±¼ä£¬¹ı5Ãëºó×Ô¶¯Çå³ı
+keys *                       è·å–å…¨éƒ¨çš„é”®å€¼å¯¹k
+del name                     å•Šåˆ é™¤nameé”®å€¼å¯¹
+setnx name  aber111          å¦‚æœå·²ç»å­˜åœ¨nameé”®å€¼å¯¹ä¸å­˜å‚¨ï¼Œååˆ™å­˜å‚¨
+setex tel 5 13161576244      è®¾ç½®telé”®å€¼å¯¹5ç§’æ—¶é—´ï¼Œè¿‡5ç§’åè‡ªåŠ¨æ¸…é™¤
 
 
-hashÃüÁî--------------------------------------------------------------------------
-//hash´æ´¢µÄĞÎÊ½ÊÇuserÒ»¸ö´ó¼ü£¬ÆäÖĞ°üº¬¶à¸öĞ¡½¡£¬¶à¸öĞ¡½¡¶ÔÓ¦¶à¸ö¼üÖµ(userÖ¸Ò»¸öhash´ó¼ü)
-hset user username aber     		ÉèÖÃµ¥¸öĞ¡½¡Öµ¶Ô   ·µ»Ø0.±íÊ¾ĞŞ¸Ä£¬1.±íÊ¾Ìí¼Ó
-hget user username          		»ñÈ¡µ¥¸öĞ¡¼üÖµ¶ÔÖµ
-hmset user age 20 address jilin   	ÉèÖÃ¶à¸öĞ¡¼üÖµ¶Ô
-hmget user username age address  	»ñÈ¡¶à¸öĞ¡¼üÖµ¶Ô
-del user                  	 	É¾³ıuser
-hgetall user               		·µ»ØuserÖĞµÄÈ«²¿ÊôĞÔºÍÊôĞÔÖµ
-hexists user name          		ÅĞ¶ÏuserÖĞÊÇ·ñ´æÔÚname×Ö¶Î£¬0.±íÊ¾²»´æÔÚ£¬1.´æÔÚ
-hdel user name age         		É¾³ıuserÖĞ¶à¸ö¸öÊôĞÔ
-hkeys user                 		»ñÈ¡userÈ«²¿µÄÊôĞÔÃû
-hvals user                 		»ñÈ¡userÈ«²¿µÄÊôĞÔÖµ
-hlen user                  		»ñÈ¡userÖĞÓĞ¼¸¸öÊôĞÔ
+hashå‘½ä»¤--------------------------------------------------------------------------
+//hashå­˜å‚¨çš„å½¢å¼æ˜¯userä¸€ä¸ªå¤§é”®ï¼Œå…¶ä¸­åŒ…å«å¤šä¸ªå°å¥ï¼Œå¤šä¸ªå°å¥å¯¹åº”å¤šä¸ªé”®å€¼(useræŒ‡ä¸€ä¸ªhashå¤§é”®)
+hset user username aber     		è®¾ç½®å•ä¸ªå°å¥å€¼å¯¹   è¿”å›0.è¡¨ç¤ºä¿®æ”¹ï¼Œ1.è¡¨ç¤ºæ·»åŠ 
+hget user username          		è·å–å•ä¸ªå°é”®å€¼å¯¹å€¼
+hmset user age 20 address jilin   	è®¾ç½®å¤šä¸ªå°é”®å€¼å¯¹
+hmget user username age address  	è·å–å¤šä¸ªå°é”®å€¼å¯¹
+del user                  	 	åˆ é™¤user
+hgetall user               		è¿”å›userä¸­çš„å…¨éƒ¨å±æ€§å’Œå±æ€§å€¼
+hexists user name          		åˆ¤æ–­userä¸­æ˜¯å¦å­˜åœ¨nameå­—æ®µï¼Œ0.è¡¨ç¤ºä¸å­˜åœ¨ï¼Œ1.å­˜åœ¨
+hdel user name age         		åˆ é™¤userä¸­å¤šä¸ªä¸ªå±æ€§
+hkeys user                 		è·å–userå…¨éƒ¨çš„å±æ€§å
+hvals user                 		è·å–userå…¨éƒ¨çš„å±æ€§å€¼
+hlen user                  		è·å–userä¸­æœ‰å‡ ä¸ªå±æ€§
 
 list-------------------------------------------------------------------------------
-lpush  list 1 2 3         ´Ó×ó¶ËÑ¹Õ»
-rpush list 5 6 7   	´ÓÓÒ¶ËÑ¹Õ»
-lpop   list        	´Ó×ó¶Ë³öÕ»
-rpop   list        	´ÓÓÒ¶Ë³öÕ»
-llen   list        	²é¿´listµÄ³¤¶È
-lrange list  0  2  	½ØÈ¡lsitÖĞ´ÓµÚÒ»¸öË÷Òıµ½µÚ¶ş¸öË÷Òı£¨ºóÒ»¸ö²ÎÊıÎª-1±íÊ¾È«²¿È¡³ö£©²»ÊÇ³öÕ¾ÊÇÈ¡³ö¡£
-lrem list count 100 	Èç¹ûcount¡·0Ê±£¬»á´Ó×ó±ß¿ªÊ¼É¾³ıÖµÎª100µÄcount¸ö
-		    	Èç¹ûcount¡¶0Ê±£¬»á´ÓÓÒ±ß¿ªÊ¼É¾³ıÖµÎª100µÄcount¸ö
-		    	Èç¹ûcount=0Ê±£¬»áÈ«²¿É¾³ıÖµÎª100µÄ¼ü¡£
-		  	·µ»ØµÄÉ¾³ıµÄÊıÁ¿
-lset list 0 1000  	½«listµÄµÚÒ»¸öÖµĞŞ¸ÄÎª1000
-lindex list 0     	»ñÈ¡listµÚÒ»¸öÖµ
-ltrim list 0 2     	É¾³ı0µ½2Çø¼äÖ®ÍâµÄÖµ
+lpush  list 1 2 3         ä»å·¦ç«¯å‹æ ˆ
+rpush list 5 6 7   	ä»å³ç«¯å‹æ ˆ
+lpop   list        	ä»å·¦ç«¯å‡ºæ ˆ
+rpop   list        	ä»å³ç«¯å‡ºæ ˆ
+llen   list        	æŸ¥çœ‹listçš„é•¿åº¦
+lrange list  0  2  	æˆªå–lsitä¸­ä»ç¬¬ä¸€ä¸ªç´¢å¼•åˆ°ç¬¬äºŒä¸ªç´¢å¼•ï¼ˆåä¸€ä¸ªå‚æ•°ä¸º-1è¡¨ç¤ºå…¨éƒ¨å–å‡ºï¼‰ä¸æ˜¯å‡ºç«™æ˜¯å–å‡ºã€‚
+lrem list count 100 	å¦‚æœcountã€‹0æ—¶ï¼Œä¼šä»å·¦è¾¹å¼€å§‹åˆ é™¤å€¼ä¸º100çš„countä¸ª
+		    	å¦‚æœcountã€Š0æ—¶ï¼Œä¼šä»å³è¾¹å¼€å§‹åˆ é™¤å€¼ä¸º100çš„countä¸ª
+		    	å¦‚æœcount=0æ—¶ï¼Œä¼šå…¨éƒ¨åˆ é™¤å€¼ä¸º100çš„é”®ã€‚
+		  	è¿”å›çš„åˆ é™¤çš„æ•°é‡
+lset list 0 1000  	å°†listçš„ç¬¬ä¸€ä¸ªå€¼ä¿®æ”¹ä¸º1000
+lindex list 0     	è·å–listç¬¬ä¸€ä¸ªå€¼
+ltrim list 0 2     	åˆ é™¤0åˆ°2åŒºé—´ä¹‹å¤–çš„å€¼
 
 
 set--------------------------------------------------------------------------------
-sadd myset 1 2 3 3	Ìí¼ÓsetÀàĞÍµÄÊı¾İmysetÖµÎª1 2 3 £¬ÓÉÓÚset²»ÄÜÖØ¸´£¬ËùÒÔÁ½¸ö3Ö»ÄÜ±£´æÒ»¸ö
-srem myset 3      	É¾³ımysetÖĞÖµÎª3µÄÊı¾İ
-smembers myset    	±éÀúset
-sismember myset 1 	ÅĞ¶ÏmysetÖĞÊÇ·ñÓĞÖµ1£¬Èç¹ûÓĞ·µ»Ø1£¬·´Ôò0
+sadd myset 1 2 3 3	æ·»åŠ setç±»å‹çš„æ•°æ®mysetå€¼ä¸º1 2 3 ï¼Œç”±äºsetä¸èƒ½é‡å¤ï¼Œæ‰€ä»¥ä¸¤ä¸ª3åªèƒ½ä¿å­˜ä¸€ä¸ª
+srem myset 3      	åˆ é™¤mysetä¸­å€¼ä¸º3çš„æ•°æ®
+smembers myset    	éå†set
+sismember myset 1 	åˆ¤æ–­mysetä¸­æ˜¯å¦æœ‰å€¼1ï¼Œå¦‚æœæœ‰è¿”å›1ï¼Œååˆ™0
 
 
 sortset----------------------------------------------------------------------------
-zadd sortsets 10 aber 20 wang 30 bo     Ìí¼ÓÃûÎªsortsetµÄsortsetÀàĞÍÊı¾İ£¬·ÖÊı·Ö±ğÎª10 20 30 Öµ·Ö±ğÎª aber wang bo
-zscore sortsets aber  			»ñÈ¡·ÖÊı
-zrange sortsets 0 2    			»ñÈ¡sortsetsÖĞ´Ó0µ½2£¨°´ÕÕ´ÓĞ¡µ½´óµÄË³Ğò£©£¨2¸Ä³É-1ÊÇÈ«²¿»ñÈ¡£©
-zrevrange sortsets 0 2 			»ñÈ¡sortsetsÖĞ´Ó0µ½2£¨°´ÕÕ´Ó´óµ½Ğ£µÄË³Ğò£©£¨2¸Ä³É-1ÊÇÈ«²¿»ñÈ¡£©
-zrangebyscore sortsets 30 40 		¸ù¾İ·ÖÊı·¶Î§»ñÈ¡ÔÚ·¶Î§ÄÚÈ«²¿µÄÖµ£¨30-40£©
-zrangebyscore sortsets 30 40 		¸ù¾İ·ÖÊı·¶Î§»ñÈ¡ÔÚ·¶Î§ÄÚÈ«²¿µÄÖµºÍ·ÖÊı£¨30-40£©
-zincrby sortsets  5  aber 1		¸øsortsetsÖĞµÄaber¼Ó5·Ö£¬Ö®Ç°ÊÇ10£¬ÏÖÔÚ¾Í±ä³É15¡£ÈçÖ®Ç°Ã»ÓĞaberÔòÉú³½Ò»¸ö·ÖÊıÎª5 ÖµÎªaberµÄÊı¾İ
-zcard sortsets				»ñÈ¡sortsetsÖĞÔªËØµÄ¸öÊı
-zsount sortsets 20 30 			»ñÈ¡sortsetsÖĞ·ÖÊıÔÚ20 µ½30 µÄÖµ
-zremrangeByRank sortsets 0 1 		É¾³ısortsetsÖĞ0µ½1
-zrem sortsets aber			É¾³ıÖµÎªaberµÄÊı¾İ
-zrank sortsets aber			aberÔÚsortsetsÖĞÅÅĞòÊÇµÚ¶àÉÙ£¨´Ó0¿ªÊ¼£©
+zadd sortsets 10 aber 20 wang 30 bo     æ·»åŠ åä¸ºsortsetçš„sortsetç±»å‹æ•°æ®ï¼Œåˆ†æ•°åˆ†åˆ«ä¸º10 20 30 å€¼åˆ†åˆ«ä¸º aber wang bo
+zscore sortsets aber  			è·å–åˆ†æ•°
+zrange sortsets 0 2    			è·å–sortsetsä¸­ä»0åˆ°2ï¼ˆæŒ‰ç…§ä»å°åˆ°å¤§çš„é¡ºåºï¼‰ï¼ˆ2æ”¹æˆ-1æ˜¯å…¨éƒ¨è·å–ï¼‰
+zrevrange sortsets 0 2 			è·å–sortsetsä¸­ä»0åˆ°2ï¼ˆæŒ‰ç…§ä»å¤§åˆ°æ ¡çš„é¡ºåºï¼‰ï¼ˆ2æ”¹æˆ-1æ˜¯å…¨éƒ¨è·å–ï¼‰
+zrangebyscore sortsets 30 40 		æ ¹æ®åˆ†æ•°èŒƒå›´è·å–åœ¨èŒƒå›´å†…å…¨éƒ¨çš„å€¼ï¼ˆ30-40ï¼‰
+zrangebyscore sortsets 30 40 		æ ¹æ®åˆ†æ•°èŒƒå›´è·å–åœ¨èŒƒå›´å†…å…¨éƒ¨çš„å€¼å’Œåˆ†æ•°ï¼ˆ30-40ï¼‰
+zincrby sortsets  5  aber 1		ç»™sortsetsä¸­çš„aberåŠ 5åˆ†ï¼Œä¹‹å‰æ˜¯10ï¼Œç°åœ¨å°±å˜æˆ15ã€‚å¦‚ä¹‹å‰æ²¡æœ‰aberåˆ™ç”Ÿè¾°ä¸€ä¸ªåˆ†æ•°ä¸º5 å€¼ä¸ºaberçš„æ•°æ®
+zcard sortsets				è·å–sortsetsä¸­å…ƒç´ çš„ä¸ªæ•°
+zsount sortsets 20 30 			è·å–sortsetsä¸­åˆ†æ•°åœ¨20 åˆ°30 çš„å€¼
+zremrangeByRank sortsets 0 1 		åˆ é™¤sortsetsä¸­0åˆ°1
+zrem sortsets aber			åˆ é™¤å€¼ä¸ºaberçš„æ•°æ®
+zrank sortsets aber			aberåœ¨sortsetsä¸­æ’åºæ˜¯ç¬¬å¤šå°‘ï¼ˆä»0å¼€å§‹ï¼‰
 
 

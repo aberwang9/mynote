@@ -1,0 +1,8 @@
+安装Oracle
+	
+	cat /proc/cpuinfo			查看cpu信息： 
+	cat /proc/mominfo   		查看cache memory
+	uname -a  					查看linux版本信息
+	
+rpm -q binutils compat-libstdc++ gcc gcc-c++ glibc glibc-devel ksh libaio libaio-devel libgcc libstdc++ libstdc++-devel libXext libXtst libX11 libXau libXi make sysstat    检查oracle依赖包
+	rpm -ivh compat-libstdc++-33-3.2.3-61.i386.rpm
