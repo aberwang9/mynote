@@ -70,3 +70,5 @@ rpm -qa|grep redis   查看安装的软件包全名
 rpm -ql redis-3.2.10-2.el7.x86_64     查看软件安装目录
   
 find / -name httpd.conf   查找全部文件夹中的httpd.conf文件
+
+id oracle //查看用户为oracle的组信息
