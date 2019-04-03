@@ -1,0 +1,34 @@
+Jxls学习笔记
+	Java中实现excel根据模板导出数据的方法有很多，一般简单的可以通过操作POI进行。还可以使用一些工具很轻松的实现模板导出。
+			这些工具现在还在维护，而且做得比较好的国内的有easyPOI，国外的就是这个JXLS了。
+			jxls是一个简单的、轻量级的excel导出库，使用特定的标记在excel模板文件中来定义输出格式和布局。
+			java中成熟的excel导出工具有pol、jxl，但他们都是使用java代码的方式来导出excel，编码效率很低且不方便维护。
+			
+			
+			employees是再context中put的key，
+	Excel模板标记在jxls中的作用分为三部分：
+		1.bean属性标记   ${department.chief.age} //属性可以是无限深度 JEXL与JSTL相似，
+		2.XLS Area定义标记   jx:area(lastCell = "D4")  XLS Area 使用excel注释标注表示，表示是的从A1到C1，
+		3.XLS Command表示标记  
+			jx:each(items="employees" var="employee" lastCell="D4")
+				items 上下文中集合的变量名；
+				var 在遍历集合的时候每一条记录的变量名；
+				area 该XLS Command的解析区域；
+				direction 数据在excel中填充的方向，默认（DOWN）向下；
+				select 其值为一个表达式，用来过滤数据。
+	自定义工具：
+	public static void exportExcel(InputStream is, OutputStream os, Map<String, Object> model) throws IOException{
+        Context context = new Context();
+        if (model != null) {
+            for (String key : model.keySet()) {
+                context.putVar(key, model.get(key));
+            }
+        }
+		JxlsHelper jxlsHelper = JxlsHelper.getInstance();
+        Transformer transformer  = jxlsHelper.createTransformer(is, os);
+        JexlExpressionEvaluator evaluator = (JexlExpressionEvaluator)transformer.getTransformationConfig().getExpressionEvaluator();
+        Map<String, Object> funcs = new HashMap<String, Object>();
+        funcs.put("utils", new JxlsUtils());    //添加自定义功能
+        evaluator.getJexlEngine().setFunctions(funcs);
+        jxlsHelper.processTemplate(context, transformer);
+	}
