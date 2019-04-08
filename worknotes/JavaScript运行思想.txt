@@ -1,0 +1,13 @@
+JavaScript运行原理：
+	1.JavaScript解析引擎：java的编译器compiler是将java编译成字节码，js是解析器Interpreter直接解析成结果
+	2.JavaScript的版本ECMAScript
+	3.JavaScript是单线程的，但是HTML5提出Web Worker标准，允许JavaScript脚本创建多个线程，但是子线程完全受主线程控制，且不得操作DOM。   《《《《《《
+		单线程是指只有一个主线程，其他还有辅助线程如，处理ajax请求的线程，处理DOM事件的线程，定时器，读写文件的线程（Node.JS）等
+	4.setTimeout(fn,0)定时器  setInterval()
+	
+	Event Loop  事件循环  看概念图
+	
+	
+HTML解析
+	HTML解析过程中，浏览器首先会解析HTML文件构造DOM树，然后解析CSS文件构建渲染树，渲染树构建完成后，浏览器开始布局渲染树并将其绘制到屏幕。
+	Event Loop

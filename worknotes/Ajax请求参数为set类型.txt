@@ -1,0 +1,27 @@
+Ajax请求参数为Set类型：
+	1.使用数组格式类型Array
+		前台的形式：
+			使用from表单：<input name="test" value="test1"/><br />     <input name="test" value="test2"/><br />
+			使用Ajax：    data: {"name":name, "address":address, "test":"test1", "test":"test2"}   
+								var address = [];
+								for(var i = 0; i<5; i++){
+									address.push("address"+i);
+								}
+
+		controller层的写法是
+			public Object array(@RequestParam(value="name[]", required=false) String[] name,
+			@RequestParam(value="address[]", required=false) List<String> address,  // 该list可以替换为set测试
+			String[] test) {}
+
+	2.使用Vo传参的形式	
+		Vo对应的值是private Set<String> demoSet;
+		前台使用使用 
+			var address = [];   address.push("xxx");  赋值的形式。                           《《《《《《《
+
+在mybatis中遍历set参数(List类似)
+	首先在Mapper.java中使用 @Param("param") VTfCustPriceLvlParam vTfCustPriceLvlParam   
+							其中VTfCustPriceLvlParam 的tfItemUuidList属性是 private Set<String>
+	然后再mapper中引用						
+	 <foreach collection="param.tfItemUuidList" index="index" item="item" open="(" close=")" separator=",">
+		#{item}
+	</foreach>

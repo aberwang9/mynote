@@ -32,3 +32,21 @@ Jxls学习笔记
         evaluator.getJexlEngine().setFunctions(funcs);
         jxlsHelper.processTemplate(context, transformer);
 	}
+	
+	
+	使用实例：
+	OutputStream os = null;
+        InputStream is = null;
+        try {
+            os = response.getOutputStream();
+            response.reset();
+            // 设定输出文件头
+            response.setHeader("Content-disposition", "attachment; filename=" + new String("111".getBytes("GB2312"), "8859_1") + ".xlsx");//设置相应头
+            response.setContentType("multipart/form-data");
+            is = Controller.class.getClassLoader().getResourceAsStream("1111.xlsx");//加载模板Excel，需要配置路径
+           
+            Map<String, Object> functionMap = new HashMap<>(1);
+            functionMap.put("fun", new JexlClientFreightClassFunction());//处理函数，使用java代码处理
+            List<VTfCustPriceLvl> vTfCustPriceLvl = clientFreightClassService.downloadCustPriceLvl(param);
+            ExcelUtils.writeExcel(is, vTfCustPriceLvl, os, functionMap);
+			}
