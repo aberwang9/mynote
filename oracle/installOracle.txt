@@ -1,8 +1,16 @@
-安装Oracle
+安装Oracle：https://www.cnblogs.com/smallfa/p/7927794.html
 	
 	cat /proc/cpuinfo			查看cpu信息： 
 	cat /proc/mominfo   		查看cache memory
 	uname -a  					查看linux版本信息
 	
-rpm -q binutils compat-libstdc++ gcc gcc-c++ glibc glibc-devel ksh libaio libaio-devel libgcc libstdc++ libstdc++-devel libXext libXtst libX11 libXau libXi make sysstat    检查oracle依赖包
+1.检查oracle依赖包
+	rpm -q binutils compat-libstdc++ gcc gcc-c++ glibc glibc-devel ksh libaio libaio-devel libgcc libstdc++ libstdc++-devel libXext libXtst libX11 libXau libXi make sysstat    
 	rpm -ivh compat-libstdc++-33-3.2.3-61.i386.rpm
+
+2.创建oracle文件夹，oracle用户，工作组
+3.检查linux的内存和kernel内核的设置
+4.解压；unzip命令对解压包是有一定的限制（200M）会报错    unzip -d /home/oracleDB/   linuxamd.zip   
+		7za
+	
+	

@@ -1,74 +1,80 @@
-pwd   			²é¿´µ±Ç°Ä¿Â¼
-clear     		ÇåÆÁ
-touch			´´½¨ÎÄ¼ş
-rm  	-rf		É¾³ıÎÄ¼ş»òÎÄ¼ş¼Ğ   -r£¨±íÊ¾É¾³ıº¬ÓĞ×ÓÄ¿Â¼£© -f£¨ºöÂÔÊÇ·ñÉ¾³ıÌáÊ¾£©
-mv			ÒÆ¶¯ÎÄ¼ş
-echo holle > text.exe ¸²¸ÇÔ­À´µÄÎÄ¼şÄÚÈİ
-echo holle>> text.exe ×·¼Óholle
+pwd   			æŸ¥çœ‹å½“å‰ç›®å½•
+clear     		æ¸…å±
+touch			åˆ›å»ºæ–‡ä»¶
+rm  	-rf		åˆ é™¤æ–‡ä»¶æˆ–æ–‡ä»¶å¤¹   -rï¼ˆè¡¨ç¤ºåˆ é™¤å«æœ‰å­ç›®å½•ï¼‰ -fï¼ˆå¿½ç•¥æ˜¯å¦åˆ é™¤æç¤ºï¼‰
+mv			ç§»åŠ¨æ–‡ä»¶
+echo holle > text.exe è¦†ç›–åŸæ¥çš„æ–‡ä»¶å†…å®¹
+echo holle>> text.exe è¿½åŠ holle
 
-lang=utf-8 ĞŞ¸Ä½çÃæ±àÂë
-date ²é¿´µ±Ç°Ê±¼ä
-
-
-groups ²é¿´µ±Ç°µÇÂ¼ÓÃ»§µÄ×éÄÚ³ÉÔ±
-groups test ²é¿´testÓÃ»§ËùÔÚµÄ×é,ÒÔ¼°×éÄÚ³ÉÔ±
-whoami ²é¿´µ±Ç°µÇÂ¼ÓÃ»§Ãû
+lang=utf-8 ä¿®æ”¹ç•Œé¢ç¼–ç 
+date æŸ¥çœ‹å½“å‰æ—¶é—´
 
 
-ls -l /home/redisWorkSpace/config/redis.conf   ²é¿´ÎÄ¼şµÄÈ¨ÏŞ
+groups æŸ¥çœ‹å½“å‰ç™»å½•ç”¨æˆ·çš„ç»„å†…æˆå‘˜
+groups test æŸ¥çœ‹testç”¨æˆ·æ‰€åœ¨çš„ç»„,ä»¥åŠç»„å†…æˆå‘˜
+whoami æŸ¥çœ‹å½“å‰ç™»å½•ç”¨æˆ·å
+
+
+ls -l /home/redisWorkSpace/config/redis.conf   æŸ¥çœ‹æ–‡ä»¶çš„æƒé™
 -rw-r--r--. 1 root root 41403 Nov  2 15:19 /home/redisWorkSpace/config/redis.conf
--rw-r--r--¿ÉÒÔ·ÖÎª- rw- r-- r--
-µÚÒ»¸ö - £¬±êÊ¶ÕâÊÇÒ»¸öÎÄ¼ş£¬d±êÊ¶Ä¿Â¼£¬Ö®ºó9Î»Èı¸öÒ»×é
-£¨µÚÒ»×é±íÊ¾userÓÃu±êÊ¶£¨user£©£¬µÚ¶ş×é±íÊ¾×éµÄÈ¨ÏŞÓÃg±êÊ¶(group)£¬µÚÈı×é±íÊ¾ÆäËûÓÃ»§ÓÃo±êÊ¶£¨other£©£©
-r£¨¿É¶Á£¬ÊıÖµ4£©w£¨¿ÉĞ´£¬ÊıÖµ2£©x£¨¿ÉÖ´ĞĞ£¬ÊıÖµ1£©.
-chown -R  aber:aber text.exe  ±êÊ¶ĞŞ¸Ätext.exe,ËùÊôµÄÓÃ»§ºÍ×é£¬R(±íÊ¾¼Ì³Ğ)£¬µÚÒ»¸öaber±íÊ¾ÓÃ»§£¬µÚ¶ş¸öaber±íÊ¾×é£¨-R°üº¬Ä¿Â¼ÏÂËùÓĞºÍÄ¿Â¼ºÍÎÄ¼ş£©
-chmod o+w text.exe    ±êÊ¶ÔÚtext.exeÉÏÌí¼ÓĞ´È¨ÏŞ
-chmod u=rwx text.exe  ±êÊ¶ÔÚtext.exeÉÏÌí¼ÓÈ¨ÏŞ
-chmod 744 text.exe    ±êÊ¶ÔÚtext.exeÉÏÌí¼ÓÈ¨ÏŞ
+-rw-r--r--å¯ä»¥åˆ†ä¸º- rw- r-- r--
+ç¬¬ä¸€ä¸ª - ï¼Œæ ‡è¯†è¿™æ˜¯ä¸€ä¸ªæ–‡ä»¶ï¼Œdæ ‡è¯†ç›®å½•ï¼Œä¹‹å9ä½ä¸‰ä¸ªä¸€ç»„
+ï¼ˆç¬¬ä¸€ç»„è¡¨ç¤ºuserç”¨uæ ‡è¯†ï¼ˆuserï¼‰ï¼Œç¬¬äºŒç»„è¡¨ç¤ºç»„çš„æƒé™ç”¨gæ ‡è¯†(group)ï¼Œç¬¬ä¸‰ç»„è¡¨ç¤ºå…¶ä»–ç”¨æˆ·ç”¨oæ ‡è¯†ï¼ˆotherï¼‰ï¼‰
+rï¼ˆå¯è¯»ï¼Œæ•°å€¼4ï¼‰wï¼ˆå¯å†™ï¼Œæ•°å€¼2ï¼‰xï¼ˆå¯æ‰§è¡Œï¼Œæ•°å€¼1ï¼‰.
+chown -R  aber:aber text.exe  æ ‡è¯†ä¿®æ”¹text.exe,æ‰€å±çš„ç”¨æˆ·å’Œç»„ï¼ŒR(è¡¨ç¤ºç»§æ‰¿)ï¼Œç¬¬ä¸€ä¸ªaberè¡¨ç¤ºç”¨æˆ·ï¼Œç¬¬äºŒä¸ªaberè¡¨ç¤ºç»„ï¼ˆ-RåŒ…å«ç›®å½•ä¸‹æ‰€æœ‰å’Œç›®å½•å’Œæ–‡ä»¶ï¼‰
+chmod o+w text.exe    æ ‡è¯†åœ¨text.exeä¸Šæ·»åŠ å†™æƒé™
+chmod u=rwx text.exe  æ ‡è¯†åœ¨text.exeä¸Šæ·»åŠ æƒé™
+chmod 744 text.exe    æ ‡è¯†åœ¨text.exeä¸Šæ·»åŠ æƒé™
 
 
-ifup eth0 Æô¶¯Íø¿¨eth0
-cd /etc/sysconfig/network-scripts/   Íø¿¨ÅäÖÃÎÄ¼şËùÔÚµÄÄ¿Â¼
-ĞŞ¸ÄlinuxµÄip
-±à¼­ifcfg-eth0ÎÄ¼ş£¬½«bootproto='dhcp'£¬ĞŞ¸ÄÎªstatic£¬ÔÙ¼ÓÒ»¸öÊôĞÔ£¬IPADDR=192.168.1.110£¬NETMASK=255.255.2555.0£¬GATEWAY=192.168.1.2
-/etc/init.d/network   restart  ÖØÆôÍø¿¨
+ifup eth0 å¯åŠ¨ç½‘å¡eth0
+cd /etc/sysconfig/network-scripts/   ç½‘å¡é…ç½®æ–‡ä»¶æ‰€åœ¨çš„ç›®å½•
+ä¿®æ”¹linuxçš„ip
+ç¼–è¾‘ifcfg-eth0æ–‡ä»¶ï¼Œå°†bootproto='dhcp'ï¼Œä¿®æ”¹ä¸ºstaticï¼Œå†åŠ ä¸€ä¸ªå±æ€§ï¼ŒIPADDR=192.168.1.110ï¼ŒNETMASK=255.255.2555.0ï¼ŒGATEWAY=192.168.1.2
+/etc/init.d/network   restart  é‡å¯ç½‘å¡
 
 
-wget www.baidu.com  ·ÃÎÊÍøÕ¾
+wget www.baidu.com  è®¿é—®ç½‘ç«™
 
-tail -fn 100 /var/log/messages   ²é¿´ÏµÍ³ÈÕÖ¾
-getenforce     ²é¿´selinuxµÄ¼¶±ğ£¨ Enforcing 1Ç¿ÖÆÄ£Ê½£¬Permissive 0¾¯¸æÄ£Ê½£¬Disabled  ¹Ø±ÕÄ£Ê½£©
-
-
-groupadd git   Ìí¼Ó×é
-usermod -a -G apache cnzhx  ½«ÓÃ»§cnzhx×·¼Ó£¨-a£©Ìí¼Óµ½apache×éÖĞ£¨-G²»É¾³ıuserÖ®Ç°µÄ×é£©
-
-centos7.3ÊÇÊ¹ÓÃfirewall×÷Îª·À»ğÇ½
-
-wget -P /root ÍøÖ·   ÏÂÔØÎÄµµÃüÁî
-rpm -ivh example.rpm °²×° example.rpm °ü²¢ÔÚ°²×°¹ı³ÌÖĞÏÔÊ¾ÕıÔÚ°²×°µÄÎÄ¼şĞÅÏ¢¼°°²×°½ø¶È
+tail -fn 100 /var/log/messages   æŸ¥çœ‹ç³»ç»Ÿæ—¥å¿—
+getenforce     æŸ¥çœ‹selinuxçš„çº§åˆ«ï¼ˆ Enforcing 1å¼ºåˆ¶æ¨¡å¼ï¼ŒPermissive 0è­¦å‘Šæ¨¡å¼ï¼ŒDisabled  å…³é—­æ¨¡å¼ï¼‰
 
 
-tar ¨Ccvf jpg.tar *.jpg  ½«Ä¿Â¼ÀïËùÓĞjpgÎÄ¼ş´ò°ü³Étar.jpg
-tar ¨Cczf jpg.tar.gz *.jpg   ½«Ä¿Â¼ÀïËùÓĞjpgÎÄ¼ş´ò°ü³Éjpg.tarºó£¬²¢ÇÒ½«ÆäÓÃgzipÑ¹Ëõ£¬Éú³ÉÒ»¸ögzipÑ¹Ëõ¹ıµÄ°ü£¬ÃüÃûÎªjpg.tar.gz
-tar ¨Ccjf jpg.tar.bz2 *.jpg ½«Ä¿Â¼ÀïËùÓĞjpgÎÄ¼ş´ò°ü³Éjpg.tarºó£¬²¢ÇÒ½«ÆäÓÃbzip2Ñ¹Ëõ£¬Éú³ÉÒ»¸öbzip2Ñ¹Ëõ¹ıµÄ°ü£¬ÃüÃûÎªjpg.tar.bz2
-tar ¨CcZf jpg.tar.Z *.jpg   ½«Ä¿Â¼ÀïËùÓĞjpgÎÄ¼ş´ò°ü³Éjpg.tarºó£¬²¢ÇÒ½«ÆäÓÃcompressÑ¹Ëõ£¬Éú³ÉÒ»¸öumcompressÑ¹Ëõ¹ıµÄ°ü£¬ÃüÃûÎªjpg.tar.Z
-rar a jpg.rar *.jpg rar¸ñÊ½µÄÑ¹Ëõ£¬ĞèÒªÏÈÏÂÔØrar for linux
-zip jpg.zip *.jpg   zip¸ñÊ½µÄÑ¹Ëõ£¬ĞèÒªÏÈÏÂÔØzip for linux 
+groupadd git   æ·»åŠ ç»„
+usermod -a -G apache cnzhx  å°†ç”¨æˆ·cnzhxè¿½åŠ ï¼ˆ-aï¼‰æ·»åŠ åˆ°apacheç»„ä¸­ï¼ˆ-Gä¸åˆ é™¤userä¹‹å‰çš„ç»„ï¼‰
 
-tar ¨Cxvf file.tar  ½âÑ¹ tar°ü
-tar -xzvf file.tar.gz ½âÑ¹tar.gz
-tar -xjvf file.tar.bz2   ½âÑ¹ tar.bz2
-tar ¨CxZvf file.tar.Z   ½âÑ¹tar.Z
-unrar e file.rar ½âÑ¹rar
-unzip file.zip ½âÑ¹zip
+centos7.3æ˜¯ä½¿ç”¨firewallä½œä¸ºé˜²ç«å¢™
+
+wget -P /root ç½‘å€   ä¸‹è½½æ–‡æ¡£å‘½ä»¤
+rpm -ivh example.rpm å®‰è£… example.rpm åŒ…å¹¶åœ¨å®‰è£…è¿‡ç¨‹ä¸­æ˜¾ç¤ºæ­£åœ¨å®‰è£…çš„æ–‡ä»¶ä¿¡æ¯åŠå®‰è£…è¿›åº¦
 
 
-yum µÄÊ¹ÓÃ·½·¨£ºhttps://blog.csdn.net/zengmingen/article/details/78225612
-yum list installed   ²é¿´ÒÑ°²×°µÄrpm°ü
-rpm -qa|grep redis   ²é¿´°²×°µÄÈí¼ş°üÈ«Ãû
-rpm -ql redis-3.2.10-2.el7.x86_64     ²é¿´Èí¼ş°²×°Ä¿Â¼
+tar â€“cvf jpg.tar *.jpg  å°†ç›®å½•é‡Œæ‰€æœ‰jpgæ–‡ä»¶æ‰“åŒ…æˆtar.jpg
+tar â€“czf jpg.tar.gz *.jpg   å°†ç›®å½•é‡Œæ‰€æœ‰jpgæ–‡ä»¶æ‰“åŒ…æˆjpg.taråï¼Œå¹¶ä¸”å°†å…¶ç”¨gzipå‹ç¼©ï¼Œç”Ÿæˆä¸€ä¸ªgzipå‹ç¼©è¿‡çš„åŒ…ï¼Œå‘½åä¸ºjpg.tar.gz
+tar â€“cjf jpg.tar.bz2 *.jpg å°†ç›®å½•é‡Œæ‰€æœ‰jpgæ–‡ä»¶æ‰“åŒ…æˆjpg.taråï¼Œå¹¶ä¸”å°†å…¶ç”¨bzip2å‹ç¼©ï¼Œç”Ÿæˆä¸€ä¸ªbzip2å‹ç¼©è¿‡çš„åŒ…ï¼Œå‘½åä¸ºjpg.tar.bz2
+tar â€“cZf jpg.tar.Z *.jpg   å°†ç›®å½•é‡Œæ‰€æœ‰jpgæ–‡ä»¶æ‰“åŒ…æˆjpg.taråï¼Œå¹¶ä¸”å°†å…¶ç”¨compresså‹ç¼©ï¼Œç”Ÿæˆä¸€ä¸ªumcompresså‹ç¼©è¿‡çš„åŒ…ï¼Œå‘½åä¸ºjpg.tar.Z
+rar a jpg.rar *.jpg raræ ¼å¼çš„å‹ç¼©ï¼Œéœ€è¦å…ˆä¸‹è½½rar for linux
+zip jpg.zip *.jpg   zipæ ¼å¼çš„å‹ç¼©ï¼Œéœ€è¦å…ˆä¸‹è½½zip for linux 
+
+tar â€“xvf file.tar  è§£å‹ taråŒ…
+tar -xzvf file.tar.gz è§£å‹tar.gz
+tar -xjvf file.tar.bz2   è§£å‹ tar.bz2
+tar â€“xZvf file.tar.Z   è§£å‹tar.Z
+unrar e file.rar è§£å‹rar
+unzip file.zip è§£å‹zip
+
+
+yum çš„ä½¿ç”¨æ–¹æ³•ï¼šhttps://blog.csdn.net/zengmingen/article/details/78225612
+yum list installed   æŸ¥çœ‹å·²å®‰è£…çš„rpmåŒ…
+rpm -qa|grep redis   æŸ¥çœ‹å®‰è£…çš„è½¯ä»¶åŒ…å…¨å
+rpm -ql redis-3.2.10-2.el7.x86_64     æŸ¥çœ‹è½¯ä»¶å®‰è£…ç›®å½•
   
-find / -name httpd.conf   ²éÕÒÈ«²¿ÎÄ¼ş¼ĞÖĞµÄhttpd.confÎÄ¼ş
+find / -name httpd.conf   æŸ¥æ‰¾å…¨éƒ¨æ–‡ä»¶å¤¹ä¸­çš„httpd.confæ–‡ä»¶
 
-id oracle //²é¿´ÓÃ»§ÎªoracleµÄ×éĞÅÏ¢
+id oracle //æŸ¥çœ‹ç”¨æˆ·ä¸ºoracleçš„ç»„ä¿¡æ¯
+
+centos7ç³»ç»Ÿçš„firewalldçš„åŸºæœ¬ä½¿ç”¨
+	å¯åŠ¨ï¼š systemctl start firewalld
+	æŸ¥çœ‹çŠ¶æ€ï¼š systemctl status firewalld 
+	åœæ­¢ï¼š systemctl disable firewalld
+	ç¦ç”¨ï¼š systemctl stop firewalld
