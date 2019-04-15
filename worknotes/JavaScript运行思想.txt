@@ -7,7 +7,34 @@ JavaScript运行原理：
 	
 	Event Loop  事件循环  看概念图
 	
-	
 HTML解析
 	HTML解析过程中，浏览器首先会解析HTML文件构造DOM树，然后解析CSS文件构建渲染树，渲染树构建完成后，浏览器开始布局渲染树并将其绘制到屏幕。
 	Event Loop
+
+	
+ES6和之前版本相比：
+	1.  const      const常量字符是用不了，只能使用let和var ，let和const都是块级作用域。
+	2.  解构赋值   avaScript引入了解构赋值，可以同时对一组变量进行赋值，var [x, y, z] = ['hello', 'JavaScript', 'ES6'];
+					之前只能这样使用：var array[] = ['hello', 'JavaScript', 'ES6'];   var x = array[0];    var y = array[1];  var z = array[2]
+					即
+						var person = {
+							name: '小明',
+							age: 20,
+							gender: 'male',
+							passport: 'G-12345678',
+							school: 'No.4 middle school'
+						};
+						var {name, age, passport} = person;
+	apply  虽然在一个独立的函数调用中，根据是否是strict模式，this指向undefined或window，不过，我们还是可以控制this的指向的！
+		要指定函数的this指向哪个对象，可以用函数本身的apply方法，它接收两个参数，第一个参数就是需要绑定的this变量，第二个参数是Array，表示函数本身的参数。
+		用apply修复getAge()调用：
+		另一个与apply()类似的方法是call()，唯一区别是：
+
+			apply()把参数打包成Array再传入；
+
+			call()把参数按顺序传入。
+
+			比如调用Math.max(3, 5, 4)，分别用apply()和call()实现如下：
+
+			Math.max.apply(null, [3, 5, 4]); // 5
+			Math.max.call(null, 3, 5, 4); // 5

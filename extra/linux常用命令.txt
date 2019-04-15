@@ -1,0 +1,9 @@
+passwd oracle    在root用户下，修改oracle用户的登陆密码。
+strace -o /tmp/output.txt -T -tt -e trace=all  sqlplus / as sysdba    跟踪命令
+strace -t -p 4545
+
+
+df -h    查询磁盘空间；
+df -i  查看inode节点使用情况；
+
+ls -l  查看路径权限情况。ll    ,    ls -a

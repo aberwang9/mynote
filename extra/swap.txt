@@ -1,0 +1,35 @@
+一，开启关闭
+	1、关闭SWAP
+		swapoff -a   一般用于大物理内存的服务，执行以上命令，则可以关闭SWAP分区。
+	2、开启SWAP
+		swapon -a    执行以上命令，则可以开启SWAP分区。
+
+二、刷新SWAP
+	当Swap占用率高达30%，对系统性能可能会有一定影响，所以在适当情况下，我们可以执行上述的两个命令刷新一次Swap（将Swap里的数据转储回内存，并清空Swap里的数据）
+	swapoff -a && swapon -a
+	注意：需要切换到root用户下执行。
+	执行上述命令，即可达到相应目的。
+	其实，刷新Swap原理就是把Swap关闭后再重启。
+	
+	
+创建swapfile
+		1.执行命令：dd if=/dev/zero of=swapfile bs=1024 count=5000000
+		注：可根据实际需要更改count值的大小，这里设置5000000，大概就是4G多
+		2.将swapfile设置为swap空间
+		执行命令：mkswap swapfile
+		3.启用交换空间
+		执行命令：swapon swapfile
+		4.查看是否增加swap分区
+		执行命令：free -h
+		
+删除swapfile
+		1.如果创建了swapfile之后，想要删除，必须先执行以下命令
+		swapoff swapfile
+		2.然后再执行删除文件操作
+		rm swapfile
+	注：如果没有执行swapoff操作，就执行执行删除文件的操作，系统会报错，不给删除。swapoff相当于是卸载swap分区。
+
+	
+挂载：系统重新启动时自动挂载
+	修改/etc/fstab   文件,在最后一行加一条
+	/root/swapfile  swap    swap    defaults    pri=1000   0

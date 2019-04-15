@@ -1,16 +1,228 @@
 安装Oracle：https://www.cnblogs.com/smallfa/p/7927794.html
-	
-	cat /proc/cpuinfo			查看cpu信息： 
-	cat /proc/mominfo   		查看cache memory
-	uname -a  					查看linux版本信息
-	
-1.检查oracle依赖包
-	rpm -q binutils compat-libstdc++ gcc gcc-c++ glibc glibc-devel ksh libaio libaio-devel libgcc libstdc++ libstdc++-devel libXext libXtst libX11 libXau libXi make sysstat    
-	rpm -ivh compat-libstdc++-33-3.2.3-61.i386.rpm
+https://www.cnblogs.com/pachulia/p/9261721.html
 
-2.创建oracle文件夹，oracle用户，工作组
-3.检查linux的内存和kernel内核的设置
-4.解压；unzip命令对解压包是有一定的限制（200M）会报错    unzip -d /home/oracleDB/   linuxamd.zip   
-		7za
+准备工作：
+	下载安装包https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html
+		我下载的是;Oracle Database 12c Release 2
+	查看自己的linux信息
+		cat /proc/cpuinfo			查看cpu信息： 
+		cat /proc/mominfo   		查看cache memory
+		uname -a  					查看linux版本信息
+	修改内核参数：
+		vi /etc/sysctl.conf    添加以下内容
+				fs.file-max = 6815744
+				kernel.sem = 250 32000 100 128
+				kernel.shmmni = 4096
+				kernel.shmall = 1073741824
+				kernel.shmmax = 4398046511104
+				kernel.panic_on_oops = 1
+				net.core.rmem_default = 262144
+				net.core.rmem_max = 4194304
+				net.core.wmem_default = 262144
+				net.core.wmem_max = 1048576
+				net.ipv4.conf.all.rp_filter = 2
+				net.ipv4.conf.default.rp_filter = 2
+				fs.aio-max-nr = 1048576
+				net.ipv4.ip_local_port_range = 9000 65500
 	
-	
+		查看是否修改成功： sysctl -p
+	限制oracle用户资源使用； vi /etc/security/limits.conf 
+			添加以下内容：
+				oracle   soft   nofile    1024
+				oracle   hard   nofile    65536
+				oracle   soft   nproc    16384
+				oracle   hard   nproc    16384
+				oracle   soft   stack    10240
+				oracle   hard   stack    32768
+				oracle   hard   memlock    134217728
+				oracle   soft   memlock    134217728
+		
+	检查oracle依赖包
+		rpm -q binutils compat-libstdc++ gcc gcc-c++ glibc glibc-devel ksh libaio libaio-devel libgcc libstdc++ libstdc++-devel libXext libXtst libX11 libXau libXi make sysstat    
+		rpm -ivh compat-libstdc++-33-3.2.3-61.i386.rpm
+	创建新组和新用户(最好按照一下添加，原文文档建议)
+			groupadd -g 54321 oinstall
+			groupadd -g 54322 dba
+			groupadd -g 54323 oper
+
+			useradd -u 54321 -g oinstall -G dba,oper oracle
+
+			groupadd -g 54321 oinstall
+			groupadd -g 54322 dba
+			groupadd -g 54323 oper
+
+			useradd -u 54321 -g oinstall -G dba,oper oracle
+		设置oracle密码：passwd oracle
+	修改设置SELINUX 
+		运行：vi /etc/selinux/config
+		## 将`SELINUX`修改为permissive
+		SELINUX=permissive
+		运行：setenforce Permissive
+		setenforce: SELinux is disabled
+	禁用防火墙：
+		运行：systemctl stop firewalld
+		运行：systemctl disable firewalld
+	创建Oracle安装目录并且赋值权限
+		运行：mkdir -p /home/oracleDB/oracle12c   (目录因人而已)
+		运行：chown -R oracle:oinstall /home/oracleDB
+		运行：chmod -R 775 /home/oracleDB
+	为Oracle用户配置环境变量并验证
+		运行:su oracle
+		运行: vim .bash_profile  (如果找不到运行：vim /home/oracle/.bash_profile)
+			添加一下内容
+				export TMP=/tmp
+				export TMPDIR=$TMP
+				export ORACLE_HOSTNAME=aber   (因人而异)
+				export ORACLE_UNQNAME=cdb1
+				export ORACLE_BASE=/home/oracleDB
+				export ORACLE_HOME=$ORACLE_BASE/oracle12c
+				export ORACLE_SID=epps
+				export PATH=/usr/sbin:/usr/local/bin:$PATH
+				export PATH=$ORACLE_HOME/bin:$PATH
+				export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
+				export CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+		使配置立即生效 运行：source .bash_profile  会显示刚刚配置的路径
+		
+		
+oracle安装(以下是oracle用户下运行[oracle@aber ~]$ )
+	解压：
+		运行：unzip linuxx64_12201_database.zip    会在同目录中出现一个 database文件夹
+	修改响应文件
+		运行：cd ./database/response/
+		运行：vi db_install.rsp
+			添加以下内容
+				oracle.install.option=INSTALL_DB_SWONLY
+				UNIX_GROUP_NAME=oinstall
+				INVENTORY_LOCATION=/home/oracleDB/oraInventory
+				ORACLE_HOME=/home/oracleDB/oracle12c
+				ORACLE_BASE=/home/oracleDB
+				oracle.install.db.InstallEdition=EE
+				oracle.install.db.OSDBA_GROUP=dba
+				oracle.install.db.OSBACKUPDBA_GROUP=dba
+				oracle.install.db.OSDGDBA_GROUP=dba
+				oracle.install.db.OSKMDBA_GROUP=dba
+				oracle.install.db.OSRACDBA_GROUP=dba
+			
+	静默安装：
+		运行：cd ../  (返回到database文件夹下)
+		运行：./runInstaller -ignoreSysPrereqs -ignorePrereq -waitforcompletion -showProgress -silent -responseFile /home/oracle/database/response/db_install.rsp
+			运行这一步很重要，如用出现的错误
+				Checking swap space: must be greater than 150 MB.   Actual 511 MB    <<  failed  
+				看下文swap决绝方案
+		正常运行runInstaller。。。会出现以下
+							Starting Oracle Universal Installer...
+							Checking Temp space: must be greater than 500 MB.   Actual 21922 MB    Passed
+							Checking swap space: must be greater than 150 MB.   Actual 511 MB    Passed
+							Preparing to launch Oracle Universal Installer from /tmp/OraInstall2018-05-25_04-36-06PM. Please wait ...WARNING The Central Inventory is located in the Oracle base.
+							   ACTION: Oracle recommends placing this Central Inventory in a location outside the Oracle base directory.
+							You can find the log of this install session at:
+							 /home/oracleDB/oraInventory/logs/installActions2018-05-25_04-36-06PM.log
+							Prepare in progress.
+							..................................................   8% Done.
+
+							Prepare successful.
+
+							Copy files in progress.
+							..................................................   17% Done.
+							..................................................   22% Done.
+							..................................................   27% Done.
+							..................................................   32% Done.
+							..................................................   40% Done.
+							..................................................   45% Done.
+							..................................................   50% Done.
+							..................................................   55% Done.
+							..................................................   60% Done.
+							..................................................   65% Done.
+							..................................................   70% Done.
+							..................................................   75% Done.
+							..................................................   80% Done.
+							....................
+							Copy files successful.
+
+							Link binaries in progress.
+							..........
+							Link binaries successful.
+
+							Setup files in progress.
+							..............................
+							Setup files successful.
+
+							Setup Inventory in progress.
+
+							Setup Inventory successful.
+
+							Finish Setup successful.
+							The installation of Oracle Database 12c was successful.
+							Please check '/usr/local/products/oracle12c/oraInventory/logs/silentInstall2018-05-25_04-36-06PM.log' for more details.
+
+							Setup Oracle Base in progress.
+
+							Setup Oracle Base successful.
+							..................................................   95% Done.
+
+							As a root user, execute the following script(s):
+								1. /home/oracleDB/oraInventory/orainstRoot.sh
+								2. /home/oracleDB/oracle12c/root.sh
+
+
+
+							..................................................   100% Done.
+
+							Successfully Setup Software.
+							
+		切换到root用户下
+			运行：su root
+			运行: /home/oracleDB/oraInventory/orainstRoot.sh
+			运行：/home/oracleDB/oracle12c/root.sh
+			
+检验是否安装成功(oracle用户下)
+	运行：sqlplus / as sysdba
+		出现以下表示安装成功
+			SQL*Plus: Release 12.2.0.1.0 Production on Sun May 27 11:52:01 2018
+			Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+			Connected to an idle instance.
+			SQL>
+		如果出现输入用户名，密码什么的，说明安装有问题，建议删除后重装，重新按照以上步骤
+			删除oracle：看下文删除oracle
+创建oracle数据库实例
+			dbca -silent -createDatabase -templateName /home/oracleDB/oracle12c/assistants/dbca/templates/General_Purpose.dbc  -gdbname cdb1 -sid cdb1 -responseFile /lost+found/database/response/dbca.rsp  -characterSet AL32UTF8  -sysPassword oracle123456.  -systemPassword oracle123456.  -createAsContainerDatabase true  -numberOfPDBs 1  -pdbName pdb1  -pdbAdminPassword oracle123456.  -automaticMemoryManagement false  -ignorePreReqs
+数据库监听配置(oracle用户下)
+	查看linux的监听状态
+		运行;lsnrctl status
+				正常如下：
+					LSNRCTL for Linux: Version 12.2.0.1.0 - Production on 27-MAY-2018 17:20:08
+
+					Copyright (c) 1991, 2016, Oracle.  All rights reserved.
+
+					Connecting to (ADDRESS=(PROTOCOL=tcp)(HOST=)(PORT=1521))
+					TNS-12541: TNS:no listener
+					 TNS-12560: TNS:protocol adapter error
+					  TNS-00511: No listener
+					   Linux Error: 111: Connection refused
+	绑定监听使用默认的netca.rsp (在解压database/response/netca.rsp)
+		运行：netca -silent -responseFile netca.rsp
+			出现Oracle Net Services configuration successful. The exit code is 0就对了
+	查看监听状态
+		运行：lsnrctl status
+		
+	开启和关闭命令：lsnrctl start 
+					lsnrctl stop
+		
+swap决绝方案：（root用户下）
+	查看是否有swap文件分区
+		运行：swapon -s   如果有会显示出来（也会显示文件所在的位置）
+		删除；
+			运行：swapoff swapfile
+			运行：rm swapfile
+		创建：（如果没有swap分区文件，直接创建）
+			运行：dd if=/dev/zero of=swapfile bs=1M count=512 						创建文件swapfile
+			运行：mkswap swapfile     												将swapfile设置为swap空间
+			运行：swapon swapfile													启动swapfile
+			运行：free -h    或者   swapon  -s										查看是否增加swap分区
+		
+		挂载：系统重新启动时自动挂载
+			修改/etc/fstab   文件,在最后一行加一条
+			/root/swapfile  swap    swap    defaults    pri=1000   0
+删除oracle:(oracle用户下)
+	运行：/home/oracleDB/oracle12c/deinstall/deinstall  (清楚安装文件和配置文件)
+	手动删除/etc文件下的orainst.loc和oratab文件
