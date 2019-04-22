@@ -1,2 +1,13 @@
 svn提交
 	修改了文件名，提交时会出现两个.java文件，单个提交会报错（版本不统一），两个文件同时提交可以成功。
+	
+mybatis中日期的比较 当jdbcType = DATE 时, 只传入了 年月日  jdbcType = TIMESTAMP ,  年月日+ 时分秒
+		<if test="createDateFrom != null and createDateFrom !=''">
+                AND S.REC_CRE_DT &gt;= #{createDateFrom, jdbcType = DATE}
+            </if>
+            <if test="createDateTo != null and createDateTo != ''">
+            	AND S.REC_CRE_DT &lt;= #{createDateTo, jdbcType = DATE}
+            </if>
+
+
+ 

@@ -1,0 +1,2 @@
+	mysql中有ifnull，oracle 没有ifnull 但是有相同作用的
+	select    nvl(column, '代替字段或者值')  from  tableName
