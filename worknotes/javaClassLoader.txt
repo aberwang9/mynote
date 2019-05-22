@@ -1,0 +1,15 @@
+javaClassLoader ： 类加载器
+	类加载器分为三种：
+		1.bootstrap类加载器（是其他加载器的父类，使用C语言编写）
+				负责加载rt.jar中的jdk文件。
+		2.Extension类加载器（父类bootstrap）
+				先委托父类（bootstarp）加载类，如果没有加载到则从jre/lib/ext或java/ext/dirs中加载类文件。
+		3.Application类加载器（父类是Extension）
+				负责从classpath下的类的加载，是JAR中的Manifest的classpath属性定义.
+			
+	类加载器的三种机制：
+		委托机制:根据委托机制类的记载顺序是：rt.jar  --->>>   jre/lib/ext或java/ext/dirs   --->>>   classpath 路径下的类
+		可见性：子级可以弹道父级的加载器，而父级看不到子级的加载器
+		单一性：一个类不能被二次加载
+	显式加载器：
+		Class.forName( classname)和Class.forName(classname,initialized,classLoder)

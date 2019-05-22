@@ -1,0 +1,91 @@
+http://www.cnblogs.com/liukemng/p/3750117.html    springMVC国际化
+	一、基于浏览器的国际化
+		1.在spring-mvc中添加（需要有http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd）
+			<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+			<!-- 国际化信息所在的文件名 -->                     
+			<property name="basename" value="messages" />   
+			<!-- 如果在国际化资源文件中找不到对应代码的信息，就用这个代码作为名称  -->               
+			<property name="useCodeAsDefaultMessage" value="true" />           
+			</bean>
+			<!-- 国际化 end -->
+		2.resources中添加messages.properties（中文）、messages_zh_CN.properties（中文）、messages_en_US.properties（英文）三个文件
+		3.新建一个controller使用
+			RequestContext requestContext = new RequestContext(request);
+            model.addAttribute("test.name", requestContext.getMessage("test.name"));（String）
+			model.addAttribute("user", requestContext.getMessage("user"));（类，如user）
+		4.新建jsp文件
+			<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+			<spring:message code="test.tel"/>:test.tel<br/>//获取string
+			<spring:eval expression="user.num"></spring:eval><br/>//获取类，如user
+	二、基于session的国际化（在浏览器的基础上改进的）
+		1.在spring=mvc中继续添加
+			<mvc:interceptors>  
+				<!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 --> 
+				<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />  
+			</mvc:interceptors>  
+			<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+		2.在jsp中添加
+			<a href="<%=ctx %>/il8ntest/global?langType=zh">中文</a> | <a href="<%=ctx %>/il8ntest/global?langType=en">英文</a><br/>
+		3.在controller中添加
+			参数：@RequestParam(value="langType",defaultValue="zh") String langType
+			if(langType.equals("zh")){
+                Locale locale = new Locale("zh", "CN"); 
+                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale); 
+            }
+            else if(langType.equals("en")){
+                Locale locale = new Locale("en", "US"); 
+                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale);
+            }
+            else 
+                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,LocaleContextHolder.getLocale());
+			其他保留。
+	
+	
+	其实到这一步基本可以满足需求了，以下是特别情况下使用的
+	三、基于cookie的国际化（跟seesion的差不多）
+		1.将SessionLocaleResolver替换成CookieLocaleResolver
+		2.controller中替换成
+			 if(langType.equals("zh")){
+                Locale locale = new Locale("zh", "CN"); 
+                (new CookieLocaleResolver()).setLocale (request, response, locale);
+            }
+            else if(langType.equals("en")){
+                Locale locale = new Locale("en", "US"); 
+                (new CookieLocaleResolver()).setLocale (request, response, locale);
+            }
+            else 
+                (new CookieLocaleResolver()).setLocale (request, response, LocaleContextHolder.getLocale());
+		3.关于<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />3个属性的说明（可以都不设置而用其默认值）：
+
+			复制代码
+			<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+				<!-- 设置cookieName名称，可以根据名称通过js来修改设置，也可以像上面演示的那样修改设置，默认的名称为 类名+LOCALE（即：org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE-->
+				<property name="cookieName" value="lang"/>
+				<!-- 设置最大有效时间，如果是-1，则不存储，浏览器关闭后即失效，默认为Integer.MAX_INT-->
+				<property name="cookieMaxAge" value="100000">
+				<!-- 设置cookie可见的地址，默认是“/”即对网站所有地址都是可见的，如果设为其它地址，则只有该地址或其后的地址才可见-->
+				<property name="cookiePath" value="/">
+			</bean>
+	四、基于url请求的国际化
+		1.添加一个类
+					import java.util.Locale;
+					import javax.servlet.http.HttpServletRequest;
+					import javax.servlet.http.HttpServletResponse;
+					import org.springframework.web.servlet.DispatcherServlet;
+					import org.springframework.web.servlet.LocaleResolver;
+
+					public class MyAcceptHeaderLocaleResolver extends AcceptHeaderLocaleResolver {
+
+						private Locale myLocal;
+
+						public Locale resolveLocale(HttpServletRequest request) {
+							return myLocal;
+						} 
+
+						public void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
+							myLocal = locale;
+						}
+					  
+					}
+				然后在spring-mvc中的SessionLocaleResolver替换成MyAcceptHeaderLocaleResolver
+		2.保存之后就可以在请求的URL后附上 locale=zh_CN 或 locale=en_US 如 http://xxxxxxxx?locale=zh_CN 来改变语言

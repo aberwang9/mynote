@@ -1,0 +1,26 @@
+Threadlocal思维导图：
+	目的: 解决一个线程内传递参数（相当线程作用域的变量参数）
+	实现方式：
+		Threadlocal类中，有一个私有变量ThreadLocalMap，主要三个方法：1.set（），2.get（），3.remove（）。当set的时候，把当前线程当作key值
+			public void set(T value) {  
+				Thread t = Thread.currentThread();  
+				ThreadLocalMap map = getMap(t);  
+				if (map != null)  
+					map.set(this, value);  
+				else  
+					createMap(t, value);  
+			}  
+	使用场景：
+		Spring的事务管理器通过AOP切入业务代码，在进入业务代码前，会依据相应的事务管理器提取出相应的事务对象，
+		假如事务管理器是DataSourceTransactionManager，就会从DataSource中获取一个连接对象，通过一定的包装后将其保存在ThreadLocal中。而且Spring也将DataSource进行了包装，
+		重写了当中的getConnection()方法，或者说该方法的返回将由Spring来控制，这样Spring就能让线程内多次获取到的Connection对象是同一个。为什么要放在ThreadLocal里面呢？
+		由于Spring在AOP后并不能向应用程序传递參数。应用程序的每一个业务代码是事先定义好的，Spring并不会要求在业务代码的入口參数中必须编写Connection的入口參数。
+		此时Spring选择了ThreadLocal，通过它保证连接对象始终在线程内部，不论什么时候都能拿到，此时Spring很清楚什么时候回收这个连接，也就是很清楚什么时候从ThreadLocal中删除这个元素
+		图解：
+		
+							进入业务代码						    	connection
+		（  controller  ）   -------->>>>>>(业务代码 || 会依赖Mapper) ---------->>>>> ( sql )
+							              Spring      DataSource
+	优点：线程内传参
+	缺点：不能明确Threadlocal的生命周期，有可能跟线程的生命周期是相同的。占用内存。
+		

@@ -1,0 +1,25 @@
+
+and rownum &lt;=5000
+
+
+js中的new Promise()是什么
+			let promise = new Promise(function (resolve, reject) {
+					resolve(100);// reject(100)
+				});
+				promise.then(function (data) {
+					return data+100;
+
+				},function (err) {
+				   return 'ssss';
+
+				}).then(function (data) {
+					console.log(data);// 200  // undefined // sss
+				})
+		
+@JsonFormat 和 @DatetimeFormat
+			注解@JsonFormat**:主要是控制后台到前台的时间格式，也可以用前台到后台的输出。
+			注解@DateTimeFormat**:主要是限制前台到后台的时间格式
+
+default serial version ID和add generated serial version ID：
+		 一个是默认的1L，比如：private static final long serialVersionUID = 1L;
+		 一个是根据类名、接口名、成员方法及属性等来生成一个64位的哈希字段
