@@ -1,0 +1,18 @@
+一、直接使用
+	1.在配置文件中加载properties
+		 <!-- 属性文件加载 -->
+		<context:property-placeholder location="classpath:crm.properties"/>
+	2.在类中注入
+		@Value("${customer_from_type}")
+		private String customer_from_type;
+二、使用spring工具util
+	1.在配置文件中加
+		1.spring-mvc.xml加入如下内容
+		xmlns:util="http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		
+		<util:properties id="settings" location="classpath:conf.properties"/>
+	2.在类中注入	
+		@Value("#{settings['b']}")
+		public String b;
