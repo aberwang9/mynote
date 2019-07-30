@@ -1,0 +1,46 @@
+正则表达式在JavaScript的对象
+	新建：
+		var expression = /pattern / flags;  例如：var pattern2 = /[bc]at/i;
+			flags： g：表示全局（global）模式，即模式将被应用于所有的字符串，而非在发现第一个匹配项时立即停止。
+					i：表示不区分大小写（case-insensitive）模式，即在确定匹配项时忽略模式与字符串的大小写。
+					m：表示多行（multiline）模式，即在到达一行文本末尾时还会继续查找下一行中是否存在与模式匹配的项。
+		
+		var expression = new RegExp("[bc]at","i");
+			匹配的字符串模式和可选的标志字符串(两个参数都必须是字符串，不能把正则表达式字面量传递给RegExp构造函数)
+			
+	RegExp实例属性
+		global：布尔值，表示是否设置了g标志。
+		ignoreCase:布尔值，表示是否设置了i标志。
+		lastIndex：整数，表示开始搜索下一个匹配项的字符位置，从0算起。
+		multiline：布尔值，表示是否设置了m标志
+		source：正则表达式的字符串表示，按照字面量形式而非传入构造函数中的字符串模式返回。
+		
+		例如
+				var  a1 = /\[bc\]at/i;
+				console.log(a1.global);        //false
+				console.log(a1.ignoreCase);    //true
+				console.log(a1.lastIndex);     //0
+				console.log(a1.multiline);     //false
+				console.log(a1.source);        //\[bc\]at
+	exec()
+		exec()方法是专门为捕获组而设计，接收应用模式的字符串作为参数，返回包含第一个匹配项信息的数组，或者在没有匹配项的情况下返回null，
+		返回的虽然是数组，但包含两个额外的属性：index和input，其中，index表示匹配项在字符串中的位置，input表示应用正则表达式的字符串，而在数组中，
+		第一项是与整个模式匹配的字符串，其他项是与模式中的捕获组匹配的字符串。
+		
+		例如：
+				var text = "wangbo mom and dad and baby";
+				var b1 = /mom( and dad( and baby)?)?/gi;
+				var b2 = b1.exec(text);
+				console.log(b2.index);  //7
+				console.log(b2.input);  //wangbo mom and dad and baby
+				console.log(b2[0]);     //mom and dad and baby
+				console.log(b2[1]);     //and dad and baby
+				console.log(b2[2]);     //and baby
+	
+	test()
+		方法接收一个字符串参数，在模式与该参数匹配的情况下返回true；否则返回false，常被用在if语句中。
+			var text3 = '000-00-0000';
+			var c5 = /\d{3}-\d{2}-\d{4}/;
+			if(c5.test(text3)){
+				console.log('匹配成功！')   //匹配成功！
+			}

@@ -4,7 +4,7 @@
 		1. B-TREE索引  （是一种平衡树，子叶节点存放整行数据）
 			创建索引
 			create index idx_emp1_ename on emp1(ename);
-			创建唯一索引
+			创建唯一索引   unique：唯一的独特的
 			create unique index idx_uq_emp1_empno on emp1(empno) tablespace mypl;
 			
 			

@@ -1,2 +1,29 @@
 	mysql中有ifnull，oracle 没有ifnull 但是有相同作用的
 	select    nvl(column, '代替字段或者值')  from  tableName
+	
+不为null
+	select * from A where b1 is null
+	或者：
+	select * from A where b1 is not null
+
+时间比较：https://www.cnblogs.com/lanblogs/p/3257551.html
+select * from BD_VSL_FIXED_COST c1 WHERE c1.EFF_TO <  to_date('2019-07-02','yyyy-MM-dd')
+
+	<if test="effToDateTo != null">
+		AND c.EFF_TO &lt;= #{effToDateTo,jdbcType=DATE}
+	</if>
+	<if test="vslCnnme != null and vslCnnme !=''">
+		and v.VSL_CNNME  like '%'||#{vslCnnme}||'%' 
+	</if>
+	
+合并： select * from table
+		union
+		select * from table
+		
+		
+VoyageController   uploadActDt
+
+CustPriceLvlClassController uploadLvl 
+
+
+Waybillcontroller    wblExcelImport   showWaybillValMsg
