@@ -1,0 +1,6 @@
+描述：
+		项目右键->debug ->maven install出现： No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
+		原因是eclipse/STS的Prefercens->installed JREs有问题，应该的当前的JRE1.8 改为对应的JDK1.8
+		
+boot dashboard 中开启服务出现unknown port: 
+			解决方案：右键服务 -> open config -> 勾选enable JMX 中的Enable life Cycle Management

@@ -10,4 +10,8 @@ mybatis中日期的比较 当jdbcType = DATE 时, 只传入了 年月日  jdbcTy
             </if>
 
 
- 
+当一个页面是由多个html组成，并且每个页面都会引入一个JQuery，导致一个页面存在多个JQuery，有时候不会影响插件，有时候会影响插件，未来决绝问题可以使用以下语句：
+	如ZTree插件，
+		var $j = jQuery.noConflict(); 
+		var zTree = $j.fn.zTree.init($("#apiTree"), setting, rt.data);
+		var treeObj = $j.fn.zTree.getZTreeObj("apiTree");

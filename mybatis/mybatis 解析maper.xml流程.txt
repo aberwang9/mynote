@@ -1,0 +1,142 @@
+主要流程就是如下:
+扫描xml--->装载xml--->获取xml中各节点信息-->根据节点信息构造Java对象-->将Java对象放入configuration
+
+一、 使用mybatis的时候基本上都需要写一个mapper.xml以及对应的Mapper.java。在mapper.xml中写sql的时候还需要对应Mapper.java中的某个方法，常规操作知道如何弄，
+		但是你知道最后mapper.xml中的<select/>、<update/>以及<insert/>都对应Java中什么对象吗？要了解这个，就需要去了解xml的装载、解析、以及到Java对象的映射过程。
+二、介绍类
+	1.SqlSessionFactoryBean：连接mybatis与Spring的桥梁，主要作用是创建SqlSessionFactory。
+	2.XMLMapperBuilder： 装载了xml文件，该文件具体是存储在XPathParser中。
+	3.XPathParser：保存了xml文件，用于解析xml。
+	4.XMLStatementBuilder：装载了<select/>、<update/>等节点，具体是保存在XNode中，主要作用是解析出这些节点的属性，然后通过MapperBuilderAssistant将其保存在Configuration对象中。
+	5.XNode：保存了xml的节点，用于解析节点属性。比如获取<select/> 中的id等。
+	6.MapperBuilderAssistant：这是个帮助类，将XMLMapperBuilder,XMLStatementBuilder解析的xml属性转换成对应的Java对象，然后将其保存在Configuration对象中。
+	7.MappedStatement：<select/>等节点对应的Java对象。
+	8.Configuration：这个类真是个集大成者，包含mapper.xml中的cache、resultMaps、parameterMaps等，基本上就是mapper.xml对应的Java对象。
+三、装载xml
+	1.装载mapper.xml涉及SqlSessionFactoryBean、XMLMapperBuilder以及XPathParser。
+		protected SqlSessionFactory buildSqlSessionFactory() throws IOException {
+	   ....
+		if (!isEmpty(this.mapperLocations)) {
+		  // resource 就是mapper.xml文件，这里遍历所有的mapper.xml文件
+		  for (Resource mapperLocation : this.mapperLocations) {
+			if (mapperLocation == null) {
+			  continue;
+			}
+
+			try {
+			  //根据configuration以及mapper.xml文件的输入流创建XMLMapperBuilder 
+			  XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(),
+				  configuration, mapperLocation.toString(), configuration.getSqlFragments());
+			  // 主要是解析xml文件
+			  xmlMapperBuilder.parse();
+			} catch (Exception e) {
+			  throw new NestedIOException("Failed to parse mapping resource: '" + mapperLocation + "'", e);
+			} finally {
+			  ErrorContext.instance().reset();
+			}
+
+		return this.sqlSessionFactoryBuilder.build(configuration);
+	  }
+	  
+	2.接下来就是看XMLMapperBuilder的构造方法。这个构造方法主要就是根据mapper.xml文件输入流构造XPathParser，到这里某个mapper.xml已经装载到XMLMapperBuilder。
+		public class XMLMapperBuilder extends BaseBuilder {
+		  private final XPathParser parser;
+		  private final MapperBuilderAssistant builderAssistant;
+		  private final Map<String, XNode> sqlFragments;
+		...
+		 public XMLMapperBuilder(InputStream inputStream, Configuration configuration, String resource, Map<String, XNode> sqlFragments) {
+			// 根据xml文件输入流构造XPathParser
+			this(new XPathParser(inputStream, true, configuration.getVariables(), new XMLMapperEntityResolver()),
+				configuration, resource, sqlFragments);
+		  }
+
+		}
+	
+四、解析各各节点node
+	1.这一步涉及到XMLMapperBuilder、XMLStatementBuilder、XPathParser、XNode。
+		先看XMLMapperBuilder，其主要作用获取xml的节点信息。获取节点信息的主要目的是构造对应节点的Java对象。
+		比如<select/>节点构造的是MappedStatement，<resultMap></resultMap>节点构造的是ResultMap。
+			//XMLMapperBuilder
+			public void parse() {
+				if (!configuration.isResourceLoaded(resource)) {
+				   //parser 就是XPathParser，这一步获取节点<mapper/>
+				   configurationElement(parser.evalNode("/mapper"));
+				  configuration.addLoadedResource(resource);
+				  bindMapperForNamespace();
+				}
+			...
+			  }
+			/**
+			 这个方法主要是解析xml，并提取相应节点的属性,
+			  然后将其构造成Java对象，接着将对象放入configuration中
+			**/
+			private void configurationElement(XNode context) {
+				try {
+				  // 获取<mapper namespace = ''></mapper> 中namespace属性
+				  String namespace = context.getStringAttribute("namespace");
+				  if (namespace == null || namespace.equals("")) {
+					throw new BuilderException("Mapper's namespace cannot be empty");
+				  }
+				  builderAssistant.setCurrentNamespace(namespace);
+				  // 获取<mapper>  <cache-ref/> </mapper> 中cache-ref节点 
+				  cacheRefElement(context.evalNode("cache-ref"));
+				  cacheElement(context.evalNode("cache"));
+				  parameterMapElement(context.evalNodes("/mapper/parameterMap"));
+				  // 获取<mapper><resultMap></resultMap></mapper> 中resultMap节点
+				  resultMapElements(context.evalNodes("/mapper/resultMap"));
+				  sqlElement(context.evalNodes("/mapper/sql"));
+				  // 获取<select/> <insert/> <update/> <delete/> 所有节点
+				  buildStatementFromContext(context.evalNodes("select|insert|update|delete"));
+				} catch (Exception e) {
+				  throw new BuilderException("Error parsing Mapper XML. Cause: " + e, e);
+				}
+			  }
+			 private void buildStatementFromContext(List<XNode> list) {
+				if (configuration.getDatabaseId() != null) {
+				  buildStatementFromContext(list, configuration.getDatabaseId());
+				}
+				buildStatementFromContext(list, null);
+			  }
+
+			  private void buildStatementFromContext(List<XNode> list, String requiredDatabaseId) {
+			  // XNode 代表一个<select/>| <insert/>| <update/> |<delete/> 节点信息
+				for (XNode context : list) {
+				// 创建XMLStatementBuilder 
+				  final XMLStatementBuilder statementParser = new XMLStatementBuilder(configuration, builderAssistant, context, requiredDatabaseId);
+				  try {
+					statementParser.parseStatementNode();
+				  } catch (IncompleteElementException e) {
+					configuration.addIncompleteStatement(statementParser);
+				  }
+				}
+			  }
+			  
+	2.XMLStatementBuilder主要是获取<select/>| <insert/>| <update/> |<delete/>节点中的信息，然后交给MapperBuilderAssistant创建MappedStatement
+		public void parseStatementNode() {
+		String id = context.getStringAttribute("id");
+		String databaseId = context.getStringAttribute("databaseId");
+
+		if (!databaseIdMatchesCurrent(id, databaseId, this.requiredDatabaseId)) {
+		  return;
+		}
+		//主要就是获取节点属性
+		Integer fetchSize = context.getIntAttribute("fetchSize");
+		Integer timeout = context.getIntAttribute("timeout");
+		String parameterMap = context.getStringAttribute("parameterMap");
+		String parameterType = context.getStringAttribute("parameterType");
+		Class<?> parameterTypeClass = resolveClass(parameterType);
+		String resultMap = context.getStringAttribute("resultMap");
+		String resultType = context.getStringAttribute("resultType");
+		String lang = context.getStringAttribute("lang");
+		LanguageDriver langDriver = getLanguageDriver(lang);
+		.....
+		builderAssistant.addMappedStatement(id, sqlSource, statementType, sqlCommandType,
+			fetchSize, timeout, parameterMap, parameterTypeClass, resultMap, resultTypeClass,
+			resultSetTypeEnum, flushCache, useCache, resultOrdered, 
+			keyGenerator, keyProperty, keyColumn, databaseId, langDriver, resultSets);
+	  }
+五、构造MappedStatement
+	MappedStatement就是对应<select/>| <insert/>| <update/> |<delete/>节点的Java对象，其中MappedStatement有个字段id，其值为包名.类名.方法名。通过MapperBuilderAssistant将创建好的
+	MappedStatement以id为key，以MappedStatement对象为value放入Configuration中的mappedStatements中，mappedStatements字段其实是一个map。如果在一个Mapper.java中存在同名的方法，
+	那么其中肯定有个方法会失效。比如select(Integer id)与select(String key)在同一个com.test.Mapper.java中，这两个方法对应的MappedStatement存在相同的id-com.test.Mapper.select，
+	当他们都要放入Configuration中，后面放入的肯定要覆盖前面的MappedStatement。这就是为什么mybatis在同一个Mapper.java中不能够重载方法。MapperBuilderAssistant。

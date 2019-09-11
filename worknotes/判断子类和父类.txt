@@ -1,0 +1,6 @@
+isAssignableFrom()方法与instanceof关键字 都是判断类的类型
+	isAssignableFrom()是从父类的角度看子类，instanceof 是从实例角度看类型
+	用法
+		父类.class.isAssignableFrom(Class<?>)   返回boolean
+		子类实例 instanceof 父类  返回boolean
+		

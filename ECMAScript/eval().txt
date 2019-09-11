@@ -1,0 +1,12 @@
+eval() 函数可计算某个字符串，并执行其中的的 JavaScript 代码。
+eval(String) 的参数只能是原始字符串作为参数。
+	<script type="text/javascript">
+
+	eval("x=10;y=20;document.write(x*y)")
+
+	document.write(eval("2+2"))
+
+	var x=10
+	document.write(eval(x+17))
+
+	</script>

@@ -1,0 +1,2 @@
+ByteArrayInputStream、ByteArrayOutputStream和StringBuffednput Stream类可以直接访问内存，其中用ByteArrayOutputStream可以向字节数组(缓冲区)写入数据
+
