@@ -1,0 +1,102 @@
+DML：（Data Manipulation Language）数据操作语言，SQL中处理数据等操作统称未数据操作语言
+	他们时select update insert delete 就像他的名字一样，这条命令时用来对数据库里的数据进行操作的语言，不修改表的结构，只修改表的内容。
+	必须commit 才能被真正执行
+
+DDL：（Data Definition Language）数据定义语言，用于定义和管理 SQL 数据库中的所有对象的语言
+	DDL要比DML要多，主要的命令create alter drop等，DDL主要时用在定义或改变表的结构，数据类型，表之间的连接和约束等初始化工作上。
+	
+DCL：（Data Control Language）数据控制语言。用于定义数据库用户的权限
+	包括grant 授权，revoke 回收授权，deny 拒绝授予主体权限。防止主体通过其组或角色成员身份继承权限
+	
+	
+一：DCL（数据控制语言） 角色=1至多个权限的集合
+	1.GRANT 赋于权限  
+		常用的系统权限集合(角色)有以下三个:
+		CONNECT(基本的连接)=许多个权限, RESOURCE(程序开发), DBA(数据库管理)
+		create user zhangfan identified by zhangfan;
+		grant create session to zhangfan;
+		grant create table to zhangfan;
+
+		grant CONNECT,RESOURCE to zhangfan;、
+
+		给test2分配表空间的使用权限；
+		grant unlimited tablespace to test2;
+
+		常用的数据对象权限有以下六个:
+		ALL ON 数据对象名, SELECT ON 数据对象名, UPDATE ON 数据对象名,
+		DELETE ON 数据对象名, INSERT ON 数据对象名, ALTER ON 数据对象名
+
+		GRANT CONNECT, RESOURCE TO 用户名;
+		GRANT SELECT ON 表名 TO 用户名;
+		GRANT SELECT, INSERT, DELETE ON表名 TO 用户名1, 用户名2;
+
+	2.REVOKE 回收权限
+		REVOKE CONNECT, RESOURCE FROM 用户名;
+		REVOKE SELECT ON 用户名.表名 FROM 用户名;
+		REVOKE SELECT, INSERT, DELETE ON 表名 FROM 用户名1, 用户名2;   
+							
+							
+*********************例：**************************************************************************************************************************
+						    1、创建用户test2，密码也是test2（记得最有以分；号结束）：
+						        create user test2 identified by test2;
+						    2、给test2授权：create session;（允许用户登陆Oracle）：
+						        grant create session to test2;
+						    3、给test2分配创建表的权限；
+						        grant create table to test2;
+						    4、给test2分配表空间的使用权限；
+						        grant unlimited tablespace to test2;
+						    5、收回test2用户的create session权限
+						       revoke create session  from test2;   
+						    6、收回test2用户的create table、unlimited tablespace权限
+						       revoke create table,unlimited tablespace  from test2;           
+*********************例：**************************************************************************************************************************
+
+二：DDL(数据定义语言)
+	1、创建表：
+	create table t_user
+	(
+	      userid number(30),
+	      username varchar(20),
+	      age number(3),
+	      sex varchar(2)
+	);    
+
+	2、删除表：SQL> drop table t_user;
+	    
+	    
+	3、修改字段长度
+	create table t_test
+	(
+	      userid varchar2(3)
+	);  
+
+	alter table t_test modify userid varchar2(10);
+	 
+	desc t_test;        
+
+
+三：DML（数据操作语言）：
+    1、insert插入SQL：
+        (1)insert into t_user (userid,username,age,sex)
+           values (1,'老王',30,'男');
+           
+        (2)insert into t_user(userid,username) values (2,'马文涛');
+        
+        commit;
+
+    2、delete删除SQL:
+        (1)delete t_user;(如果在删除时不加条件，则把此表中的所有数据都会删除！)
+        
+          删除t_user表中,userid=3的记录
+        (2)delete t_user where userid = 3;
+
+    3、update更新SQL:
+        (1) update t_user set username = '争伟',sex = '男';
+            (更新时不加条件表中所有行记录的姓名都被修改了！)
+
+            修改t_user表,其中userid=7的记录，将其username字段值设置成"文涛"
+        (2)update t_user set username = '文涛' where userid = 7;
+    4、select查询SQL:格式——>select···from···where···group by···having···order by···;
+         
+         查询所有的用户：
+         select * from t_user;

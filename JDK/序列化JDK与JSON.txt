@@ -1,0 +1,52 @@
+JSON 的解析和序列化
+	1 需要注意的是：
+
+		ObjectMapper是JSON操作的核心，Jackson的JSON操作都是在ObjectMapper中实现的。
+		ObjectMapper有多个JSON序列化的方法，可以把JSON串保存在File、OutputStream等不同的介质中。
+		
+	2 Jackson的API：`
+			writeValue(File resultFile, Object value)可以用于所有Java值的序列化，将JSON输出到File中。
+			writeValue(OutputStream out, Object value) 可以用于所有Java对象的序列化，并将JSON串保存到流中。注意，此方法不会显示的关闭流。
+			writeValueAsString(Object value)可以用于任何Java对象的序列化方式，并输出字符串。等效于writeValue（Writer，Object) 并构造String，但是效率更高。
+			writeValueAsBytes(Object value)可用于任何Java对象的序列化方式，并输出byte[]数组。等效于writeValue（Writer，Object) 并得到byte[]数组，注意数组的编码是UTF-8；
+			<T> T readValue(String content, Class<T> valueType)注意，我们在传入Class<T>对象，注意一般是传入Class<?>，因为Class类中并不使用泛型对象，但是此处使用泛型对象，因为我们的返回值就是T，避免了类型强转。温故知新——泛型实践篇
+			
+	3. Jackson提供的注解
+			Jackson提供了一系列的注解，方便对JSON序列化和反序列化进行控制，下面介绍一些常用的注解：
+
+			JsonIgnore 此注解用于属性上，作用是Json操作时，忽略该属性。
+			JsonFormat 此注解用于属性上， 作用是把Date类型转化成为想要的格式。
+			JsonProperty 此注解用于属性上，作用是把改属性的名称序列化成另一个名称。
+			JsonSerialize 此注解用于属性上，作用是指定属性序列化的类型。
+			JsonDeserialize 此注解用于属性上，作用是指定属性反序列化的类型。
+			
+			
+JDK 的序列化和反序列化
+	1、序列化算法一般会按步骤做如下事情：
+
+		（1）将对象实例相关的类元数据输出。
+		（2）递归地输出类的超类描述直到不再有超类。
+		（3）类元数据完了以后，开始从最顶层的超类开始输出对象实例的实际数据值。
+		（4）从上至下递归输出实例的数据
+		
+		
+		
+		关于serialVersionUID 问题
+			SerialVersionUid，简言之，其目的是序列化对象版本控制，有关各版本反序列化时是否兼容。如果在新版本中这个值修改了，新版本就不 兼容旧版本，反序列化时会抛出InvalidClassException异常。如果修改较小，比如仅仅是增加了一个属性，我们希望向下兼容，老版本的数 据都能保留，那就不用修改；如果我们删除了一个属性，或者更改了类的继承关系，必然不兼容旧数据，这时就应该手动更新版本号，即 SerialVersionUid。
+			如果不显式设置SerialVersionUid，有什么后果？jdk文档中有解释，建议我们显式声明，因为如果不声明，JVM会为我们自动产生一个值，但这个值和编译器的实现相关，并不稳定，这样就可能在不同JVM环境下出现反序列化时报InvalidClassException异常。
+
+
+
+serialize 和 JSON 的比较
+			
+	serialize在编码后大概是json的两倍。
+		1. serialize后字符串包含了子串的长度，这可能是速度方面的优化，典型的空间换时间，但是它本身还是太重了。
+		2. serialize有更加详细的类型区分，而json只有四种类型，并且是以简单的符号表示。
+		
+	serialize的速度在大数据量的情况下比json差了快一个数量级。
+	
+	json无法处理对象方法等数据。
+		序列化使用serialize，特别是对象的存储。这是其存在的意义。
+		与对象无关的数据存储可以使用json，如包含大量数字的数组等。只是当遇到这种情况，我们需要做的可能是重构数据库了。
+		数据交换时使用JSON，这也是其定义所在。
+		目前JSON是能用于UTF-8编码的数据。

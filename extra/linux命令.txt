@@ -13,7 +13,7 @@ unzip /lost+found/dy-cloudticket-api-web.zip -d /home/tomcat/apache-tomcat-8.5.8
 
 
 查看jvm小进程
-jps -l
+jps -l/
 jstack -l
 
 

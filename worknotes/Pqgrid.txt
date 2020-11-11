@@ -25,3 +25,9 @@ if (index > rPP) {//把   >  改成 >=  就可以了
 } else {
 	row=tfItemTable.pqGrid("getRowData", {rowIndxPage: index});
 }
+
+
+ps -ef | grep dts-eb-web | grep -v grep | awk '{print "kill -9 "$2}' | sh
+
+
+nohup java -Djava.security.egd=file:/dev/./urandom -jar -Xms1024m -Xmx1024m  -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/appuser/dts/deploy/c:/oom dts-eb-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod --dts.sys-info.deploy=true >/dev/null 2>&1 &

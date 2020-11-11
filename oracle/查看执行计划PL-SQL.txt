@@ -1,0 +1,88 @@
+--
+select distinct rte.wbl_num from wbl_rte rte
+    left join wbl_waybill wbl on  wbl.wbl_num = rte.wbl_num
+    left join wbl_cntr_dr_leg drleg on drleg.wbl_num = rte.wbl_num
+    left join wbl_cntr_sum cntrcum on cntrcum.wbl_num = rte.wbl_num
+    where not exists(
+        select distinct wblrte.wbl_num from wbl_rte wblrte
+            left join wbl_waybill wblwbl on  wblwbl.wbl_num = wblrte.wbl_num
+            left join wbl_cntr_dr_leg wbldrleg on wbldrleg.wbl_num = wblrte.wbl_num
+            where 
+            rte.wbl_num = wblrte.wbl_num
+            AND wblrte.receive_f_cutoff_dt < TO_DATE('2019-11-27 10:00:00','yyyy-MM-dd HH24:mi:ss')
+            AND wblrte.receive_f_cutoff_dt >= TO_DATE('2019-11-26 10:00:00','yyyy-MM-dd HH24:mi:ss')
+            AND wblwbl.wbl_status = 'CONFIRM'
+            AND wbldrleg.BOUND = 'O'
+            AND wbldrleg.TO_EVENT_DT is not null
+    )
+    AND rte.receive_f_cutoff_dt < TO_DATE('2020-01-01 10:00:00','yyyy-MM-dd HH24:mi:ss')
+    AND rte.receive_f_cutoff_dt >= TO_DATE('2020-05-01 10:00:00','yyyy-MM-dd HH24:mi:ss')
+    AND wbl.wbl_status = 'CONFIRM'
+    AND drleg.BOUND = 'O'
+
+
+执行计划如下：	
+SELECT STATEMENT, GOAL = ALL_ROWS			152831	1	73
+ HASH UNIQUE			152831	1	73
+  HASH JOIN OUTER			152830	101	7373
+   NESTED LOOPS OUTER			152830	101	7373
+    STATISTICS COLLECTOR					
+     HASH JOIN SEMI			152630	100	6100
+      NESTED LOOPS SEMI			152630	100	6100
+       STATISTICS COLLECTOR					
+        HASH JOIN SEMI			152331	100	4800
+         NESTED LOOPS SEMI			152331	100	4800
+          STATISTICS COLLECTOR					
+           HASH JOIN RIGHT ANTI			152131	100	2700
+            VIEW	SYS	VW_SQ_1	101092	10030	120360
+             NESTED LOOPS SEMI			101092	10030	581740
+              NESTED LOOPS SEMI			71103	10030	361080
+               TABLE ACCESS FULL	WBL_OWNER	WBL_RTE	51038	10030	150450
+               TABLE ACCESS BY INDEX ROWID	WBL_OWNER	WBL_WAYBILL	2	42230	886830
+                INDEX UNIQUE SCAN	WBL_OWNER	IDX_WBL_WAYBILL1	1	1	
+              TABLE ACCESS BY INDEX ROWID BATCHED	WBL_OWNER	WBL_CNTR_DR_LEG	3	6913445	152095790
+               INDEX RANGE SCAN	WBL_OWNER	IDX_WBL_CNTR_DR_LEG3	2	3	
+            TABLE ACCESS FULL	WBL_OWNER	WBL_RTE	51038	10030	150450
+          TABLE ACCESS BY INDEX ROWID	WBL_OWNER	WBL_WAYBILL	2	42230	886830
+           INDEX UNIQUE SCAN	WBL_OWNER	IDX_WBL_WAYBILL1	1	1	
+         TABLE ACCESS FULL	WBL_OWNER	WBL_WAYBILL	2	42230	886830
+       TABLE ACCESS BY INDEX ROWID BATCHED	WBL_OWNER	WBL_CNTR_DR_LEG	3	9846029	127998377
+        INDEX RANGE SCAN	WBL_OWNER	IDX_WBL_CNTR_DR_LEG3	2	2	
+      TABLE ACCESS FULL	WBL_OWNER	WBL_CNTR_DR_LEG	3	9846029	127998377
+    INDEX RANGE SCAN	WBL_OWNER	IDX_WBL_CNTR_SUM2	2	1	12
+   INDEX FAST FULL SCAN	WBL_OWNER	IDX_WBL_CNTR_SUM2	2	1	12
+	
+
+
+SELECT STATEMENT, GOAL = ALL_ROWS
+	是CBO的两种运行模式之一。 
+		FIRST_ROWS(n)：优先考虑将结果度集中的前n条记录以最快的问速度反馈回来，答而其他的结果并不需要同时返回。
+		ALL_ROWS10g中的默认值： 将结果集全部返回
+		
+HASH JOIN RIGHT OUTER
+	10G以后，对于HASH外连接，ORACLE会智能的选择驱动表。
+	select  count(*) from wxh_tbd1 a ,wxh_tbd2 b where a.object_id=b.object_id(+);
+	对于上面的查询，如果选择以A为驱动表，那么执行计划的连接操作显示为HASH JOIN OUTER 。如果以B为驱动表执行计划的连接操作显示为HASH JOIN RIGHE OUTER .
+	
+HASH UNIQUE
+Oracle10g在distinct操作时作了算法改进，使用Hash Unique 代理了以前的Sort Unique.该行为由隐藏参数”
+
+
+semi就是不完全的，如果有就继续下一个，没有semi要把outer的一个在inner内全找。
+
+
+如果都是全表扫描.小表(行数少的表)做为驱动表.
+如果表的行数相等,from 后第一个表做为驱动表.
+
+如果有一个表能用索引,用索引的表做为驱动表.
+如果两个表都用能索引,则小表做为驱动表.
+如果大表返回行数少,则大表也可以做为驱动表.
+如果这些条件都一样,则from后面第一个表做为驱动表.
+
+
+
+	
+
+
+
+

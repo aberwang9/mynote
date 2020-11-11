@@ -1,0 +1,47 @@
+Spring框架还提供了很多@Condition给我们用，当然总结用语哪种好理解，看给位读者喽
+
+
+
+/*********************************************************************************************************************************************/
+@ConditionalOnBean（仅仅在当前上下文中存在某个对象时，才会实例化一个Bean）
+@ConditionalOnClass（某个class位于类路径上，才会实例化一个Bean）
+@ConditionalOnExpression（当表达式为true的时候，才会实例化一个Bean）
+@ConditionalOnMissingBean（仅仅在当前上下文中不存在某个对象时，才会实例化一个Bean）
+@ConditionalOnMissingClass（某个class类路径上不存在的时候，才会实例化一个Bean）
+@ConditionalOnNotWebApplication（不是web应用，才会实例化一个Bean）
+@ConditionalOnBean：当容器中有指定Bean的条件下进行实例化。
+@ConditionalOnMissingBean：当容器里没有指定Bean的条件下进行实例化。
+@ConditionalOnClass：当classpath类路径下有指定类的条件下进行实例化。
+@ConditionalOnMissingClass：当类路径下没有指定类的条件下进行实例化。
+@ConditionalOnWebApplication：当项目是一个Web项目时进行实例化。
+@ConditionalOnNotWebApplication：当项目不是一个Web项目时进行实例化。
+@ConditionalOnProperty：当指定的属性有指定的值时进行实例化。
+@ConditionalOnExpression：基于SpEL表达式的条件判断。
+@ConditionalOnJava：当JVM版本为指定的版本范围时触发实例化。
+@ConditionalOnResource：当类路径下有指定的资源时触发实例化。
+@ConditionalOnJndi：在JNDI存在的条件下触发实例化。
+@ConditionalOnSingleCandidate：当指定的Bean在容器中只有一个，或者有多个但是指定了首选的Bean时触发实例化。
+/*********************************************************************************************************************************************/
+
+
+
+@ConditionalOnClass：该注解的参数对应的类必须存在，否则不解析该注解修饰的配置类；
+@ConditionalOnMissingBean：该注解表示，如果存在它修饰的类的bean，则不需要再创建这个bean；可以给该注解传入参数例如@ConditionOnMissingBean(name = "example")，
+这个表示如果name为“example”的bean存在，这该注解修饰的代码块不执行。
+
+
+
+
+下面来介绍如何使用@Conditional
+public class TestCondition implements Condition  
+{  
+    /** 
+     * 只有返回true，才会启用配置 
+     */  
+    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata)  
+    {  
+        return true;  
+    }  
+}
+代码可以标注在类上面，表示该类下面的所有@Bean都会启用配置，也可以标注在方法上面，只是对该方法启用配置。
+@Conditional(TestCondition.class)

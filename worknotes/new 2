@@ -1,0 +1,8 @@
+ps -ef | grep dts-report-service | grep -v grep | awk '{print "kill -9 "$2}' | sh        
+nohup /usr/java/jdk1.8.0_181/bin/java -jar -Djava.security.egd=file:/dev/./urandom -Djava.io.tmpdir=/home/appuser/dts/deploy/tmp -Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/appuser/dts/deploy/c:/oom dts-report-service-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod --dts.sys-info.deploy=true >/dev/null 2>&1 &
+
+
+ps -ef | grep dts-eb-web | grep -v grep | awk '{print "kill -9 "$2}' | sh
+nohup java -Djava.security.egd=file:/dev/./urandom -jar -Xms1024m -Xmx1024m  -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/appuser/dts/deploy/c:/oom dts-eb-web-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod --dts.sys-info.deploy=true >/dev/null 2>&1 &
+
+PPe7q7J@@KbFgGyP

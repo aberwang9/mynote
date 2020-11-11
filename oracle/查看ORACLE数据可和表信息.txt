@@ -1,0 +1,15 @@
+- 查看ORACLE 数据库中本用户下的所有表 
+select table_name FROM user_tables;
+
+-- 查看ORACLE 数据库中所有用户下的所有表 
+select user,table_name from all_tables;
+
+-- 查看ORACLE 数据库中本用户下的所有列 
+select table_name,column_name from user_tab_columns;
+
+-- 查看ORACLE 数据库中所有用户下的所有列 
+select user,table_name,column_name from all_tab_columns;
+
+-- 查看ORACLE 数据库中的序列号 
+select * from user_sequences;
+

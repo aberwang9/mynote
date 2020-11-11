@@ -1,0 +1,58 @@
+https://blog.csdn.net/fygkchina/article/details/80521550
+
+这个函数长这个样子：OVER(PARTITION BY... ORDER BY...)
+
+顾名思义，PARTITION 中文是分割的意思，ORDER 是排序的意思，所以翻译一下就是先把一组数据按照制定的字段进行分割成各种组，然后组内按照某个字段排序。
+
+
+例如：
+SELECT ROW_NUMBER() OVER (PARTITION BY CNTR.WBL_WAYBILL_UUID ORDER BY CNTR.CNTR_VIRTUAL_NUM) AS ROW_NUM,CNTR.WBL_CNTR_UUID,CNTR.WBL_WAYBILL_UUID
+FROM WBL_CNTR CNTR  INNER JOIN T_WBL_UUIDS WBL  ON WBL.UUID = CNTR.WBL_WAYBILL_UUID
+////////解释：对WBL_WAYBILL_UUID分组，然后再根据CNTR_VIRTUAL_NUM排序，ROW_NUMBER对组内再使用数组顺序不重复编号///////////////////////////////////
+
+/*********************************************************************************************************************************************************/
+
+与OVER(PARTITION BY... ORDER BY...)匹配使用的函数
+row_number() over()、rank() over()和dense_rank() over()
+
+使用ROW_NUMBER()可以对数据编号，但是有一个问题，例子中的MI_ID是不可以重复的，如果在可以重复的情况下，就有并列的情况，这样就无法取出并列的数据，
+只能取单一排序的数据。所以这里可以换成 rank() over()和dense_rank() over()来进行编号：（rank() over()和dense_rank() over()的区别如图）
+ROW_NUMBER() over(partition by * order by *) :      	组内排序，没有重复的num
+rank() over(partition by * order by *) : 				组内排序，parition by 组内的相同 order by 标记为相同的num，下一个num会跳排序
+dense_rank() over(partition by * order by *) : 			组内排序，parition by 组内的相同 order by 标记为相同的num，下一个num会顺序排序
+
+
+/*********************************************************************************************************************************************************/
+
+
+sum() over()，first_value() over()和last_value() over()的使用
+
+sum() over()分组求和
+SUM(NVL(T2.IS_VISHEARTPROMEMBER, 0)) OVER(PARTITION BY T3.I_IDENTITY_CARD) PRO_NUM,  
+
+first_value() over()求分组第一条（first_value只能获取一个字段）
+
+last_value() over()求分组最后一条只能获取一个字段）
+
+
+/*********************************************************************************************************************************************************/
+
+常用的分析函数如下所列:
+
+row_number() over(partition by ... order by ...)
+rank() over(partition by ... order by ...)
+dense_rank() over(partition by ... order by ...)
+count() over(partition by ... order by ...)
+max() over(partition by ... order by ...)
+min() over(partition by ... order by ...)
+sum() over(partition by ... order by ...)
+avg() over(partition by ... order by ...)
+first_value() over(partition by ... order by ...)
+last_value() over(partition by ... order by ...)
+lag() over(partition by ... order by ...)
+lead() over(partition by ... order by ...)
+
+--根据DEFECT_ID作为分组，按创建时间倒序，取第一条记录（最新执行记录）
+select * from (
+    select RANK() OVER(partition by W.DEFECT_ID ORDER BY W.CREAT_TIME DESC) ROWNUMBER,W.* from t_defect_work_log W
+) where ROWNUMBER=1;

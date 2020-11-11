@@ -1,0 +1,532 @@
+
+https://blog.csdn.net/Goodbye_Youth/article/details/83960962
+Field 类位于 java.lang.reflect 包中，主要用于在程序运行状态中，动态地获取或设置字段信息，（字段对象）
+
+二、Field 类常用方法
+getAnnotatedType()
+
+返回一个 AnnotatedType 对象，该对象表示使用类型来指定由该字段对象表示的字段的类型
+
+通过其 getType() 方法，我们可以获取到对应的字段类型
+
+public class FieldTest {
+
+    private String name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        AnnotatedType annotatedType = field.getAnnotatedType();
+        // class java.lang.String
+        System.out.println(annotatedType.getType());
+    }
+}
+
+getAnnotation(Class<T> annotationClass)
+
+如果该字段对象存在指定类型的注解，则返回该注解，否则返回 null
+
+只有类级别的注解会被继承得到，对于其他对象而言，getAnnotation() 方法与 getDeclaredAnnotation() 方法作用相同
+
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface FieldAnnotation {
+
+    String key();
+
+    String value();
+}
+
+public class FieldTest {
+
+    @FieldAnnotation(key = "key", value = "value")
+    private String name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        FieldAnnotation annotation = field.getAnnotation(FieldAnnotation.class);
+        // @lang.reflect.FieldAnnotation(key=key, value=value)
+        System.out.println(annotation);
+    }
+}
+
+getDeclaredAnnotation(Class<T> annotationClass)
+
+如果该字段对象存在指定类型的注解，则返回该注解，否则返回 null
+
+只有类级别的注解会被继承得到，对于其他对象而言，getAnnotation() 方法与 getDeclaredAnnotation() 方法作用相同
+
+getAnnotationsByType(Class<T> annotationClass)
+
+如果该字段对象存在指定类型的注解，则返回该注解数组，否则返回 null
+
+只有类级别的注解会被继承得到，对于其他对象而言，getAnnotationsByType() 方法与 getDeclaredAnnotationsByType() 方法作用相同
+
+getAnnotationsByType() 方法与 getAnnotation() 方法的区别在于：getAnnotationsByType() 方法会检查修饰该字段对象的注解是否为可重复类型注解，如果是则会返回修饰该字段对象的一个或多个注解
+
+@Repeatable 用于声明注解为可重复类型注解
+
+当声明为可重复类型注解后，如果字段注解仍为一个，则 getAnnotation() 方法会正常返回，如果字段注解为多个，则 getAnnotation() 方法会返回 null
+
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@Repeatable(RepeatableAnnotation.class)
+public @interface FieldAnnotation {
+
+    String key();
+
+    String value();
+}
+
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@interface RepeatableAnnotation {
+
+    FieldAnnotation[] value();
+}
+
+public class FieldTest {
+
+    @FieldAnnotation(key = "key1", value = "value1")
+    @FieldAnnotation(key = "key2", value = "value2")
+    private String name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        // null
+        System.out.println(field.getAnnotation(FieldAnnotation.class));
+        FieldAnnotation[] annotationsByType = field.getAnnotationsByType(FieldAnnotation.class);
+        // [@com.xj.FieldAnnotation(key=key1, value=value1), @com.xj.FieldAnnotation(key=key2, value=value2)]
+        System.out.println(Arrays.toString(annotationsByType));
+    }
+}
+
+getDeclaredAnnotationsByType(Class<T> annotationClass)
+
+如果该字段对象存在指定类型的注解，则返回该注解数组，否则返回 null
+
+只有类级别的注解会被继承得到，对于其他对象而言，getAnnotationsByType() 方法与 getDeclaredAnnotationsByType() 方法作用相同
+
+getAnnotations()
+
+返回该字段对象上的所有注解，如果没有注解，则返回空数组
+
+只有类级别的注解会被继承得到，对于其他对象而言，getAnnotations() 方法与 getDeclaredAnnotations() 方法作用相同
+
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface FieldAnnotation {
+
+    String key();
+
+    String value();
+}
+
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TestAnnotation {
+
+    String key();
+
+    String value();
+}
+
+public class FieldTest {
+
+    @FieldAnnotation(key = "key1", value = "value1")
+    @TestAnnotation(key = "key2", value = "value2")
+    private String name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        Annotation[] annotations = field.getAnnotations();
+        // [@lang.reflect.FieldAnnotation(key=key1, value=value1), @lang.reflect.TestAnnotation(key=key2, value=value2)]
+        System.out.println(Arrays.toString(annotations));
+    }
+}
+
+getDeclaredAnnotations()
+
+返回该字段对象上的所有注解，如果没有注解，则返回空数组
+
+只有类级别的注解会被继承得到，对于其他对象而言，getAnnotations() 方法与 getDeclaredAnnotations() 方法作用相同
+
+getModifiers()
+
+返回修饰该字段对象修饰符的整数形式，使用 Modifier 类对其进行解码
+
+public class FieldTest {
+
+    private String name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        // private
+        System.out.println(Modifier.toString(field.getModifiers()));
+    }
+}
+
+getName()
+
+返回字段对象名称
+
+public class FieldTest {
+
+    private String name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        // name
+        System.out.println(field.getName());
+    }
+}
+
+getType()
+
+返回一个 Class 对象，该 Class 对象表示该字段对象表示的声明字段的类型 (擦除泛型)
+
+public class FieldTest<T> {
+
+    private T name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        // class java.lang.Object
+        System.out.println(field.getType());
+    }
+}
+
+getGenericType()
+
+返回一个 Type 对象，该 Type 对象表示该字段对象表示的声明字段的类型 (保留泛型)
+
+public class FieldTest<T> {
+
+    private T name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        // T
+        System.out.println(field.getGenericType());
+    }
+}
+
+isAnnotationPresent(Class<? extends Annotation> annotationClass)
+
+如果该字段对象上有指定类型的注解，则返回 true，否则为 false
+
+public class FieldTest {
+
+    @FieldAnnotation(key = "key", value = "value")
+    private String name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        // true
+        System.out.println(field.isAnnotationPresent(FieldAnnotation.class));
+    }
+}
+
+getDeclaringClass()
+
+返回该字段对象表示的字段所在类的 Class 对象
+
+public class FieldTest {
+
+    private String name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        Class<?> declaringClass = field.getDeclaringClass();
+        // class lang.reflect.FieldTest
+        System.out.println(declaringClass);
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+112
+3
+4
+5
+6
+7
+8
+9
+10
+11
+isEnumConstant()
+
+如果该字段对象表示枚举类型的元素，则返回 true，否则返回 false
+
+public class FieldTest {
+
+    private String name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        // false
+        System.out.println(field.isEnumConstant());
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+toString()
+
+返回该字段对象的字符串表示形式 (擦除泛型)
+
+public class FieldTest<T> {
+
+    private T name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        // private java.lang.Object lang.reflect.FieldTest.name
+        System.out.println(field.toString());
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+toGenericString()
+
+返回该字段对象的字符串表示形式 (保留泛型)
+
+public class FieldTest<T> {
+
+    private T name;
+
+    public static void main(String[] args) throws Exception {
+        Field field = FieldTest.class.getDeclaredField("name");
+        // private T lang.reflect.FieldTest.name
+        System.out.println(field.toGenericString());
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+isSynthetic()
+
+如果该字段对象为合成字段，则返回 true，否则为 false
+
+编译器在编译的时候，会在内部类中生成一个字段，该字段指向一个外部类的实例
+
+public class FieldTest {
+
+    private String name;
+
+    private class InnerClass {
+    
+    }
+
+    public static void main(String[] args) throws Exception {
+        InnerClass innerClass = new FieldTest().new InnerClass();
+        Field[] fields = innerClass.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            // 【final lang.reflect.FieldTest lang.reflect.FieldTest$InnerClass.this$0】 isSynthetic(): true
+            System.out.println("【" + field + "】" + " isSynthetic(): " + field.isSynthetic());
+        }
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+InnerClass 内部类反编译得到如下结果，生成了一个 this$0 的字段
+
+class FieldTest$InnerClass {
+    private FieldTest$InnerClass(FieldTest var1) {
+        this.this$0 = var1;
+    }
+}
+1
+2
+3
+4
+5
+有关 synthetic 的相关内容，小伙伴可以看下这里
+
+Java 中冷门的 synthetic 关键字原理解读
+isAccessible()
+
+获取该字段对象的可访问标志
+
+public class FieldTest {
+
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+public class Test {
+
+    public static void main(String[] args) throws Exception {
+        FieldTest fieldTest = new FieldTest();
+        fieldTest.setName("小明");
+        Field[] declaredFields = FieldTest.class.getDeclaredFields();
+        for (Field declaredField : declaredFields) {
+            // false
+            System.out.println(declaredField.isAccessible());
+        }
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+setAccessible(boolean flag)
+
+设置该字段对象的可访问标志
+
+在其他类里获取该类的私有成员变量时，需要设置访问标志为 true，否则会报异常
+
+public class FieldTest {
+
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+public class Test {
+
+    public static void main(String[] args) throws Exception {
+        FieldTest fieldTest = new FieldTest();
+        fieldTest.setName("小明");
+        Field[] declaredFields = FieldTest.class.getDeclaredFields();
+        for (Field declaredField : declaredFields) {
+            declaredField.setAccessible(true);
+            // 小明
+            System.out.println(declaredField.get(fieldTest));
+        }
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+getChar(Object obj)
+
+获取 char 类型的静态或实例字段的值，或通过扩展转换将另一个基本数据类型转换为 char 类型的值
+getByte(Object obj)
+
+获取 byte 类型的静态或实例字段的值，或通过扩展转换将另一个基本数据类型转换为 byte 类型的值
+getShort(Object obj)
+
+获取 short 类型的静态或实例字段的值，或通过扩展转换将另一个基本数据类型转换为 short 类型的值
+getInt(Object obj)
+
+获取 int 类型的静态或实例字段的值，或通过扩展转换将另一个基本数据类型转换为 int 类型的值
+getLong(Object obj)
+
+获取 long 类型的静态或实例字段的值，或通过扩展转换将另一个基本数据类型转换为 long 类型的值
+getFloat(Object obj)
+
+获取 float 类型的静态或实例字段的值，或通过扩展转换将另一个基本数据类型转换为 float 类型的值
+getDouble(Object obj)
+
+获取 double 类型的静态或实例字段的值，或通过扩展转换将另一个基本数据类型转换为 double 类型的值
+getBoolean(Object obj)
+
+获取 boolean 类型的静态或实例字段的值，或通过扩展转换将另一个基本数据类型转换为 boolean 类型的值
+getBoolean(Object obj)
+
+获取 Object 类型的静态或实例字段的值，如果是基本数据类型，则会将该值将自动包装在对象中
+————————————————
+版权声明：本文为CSDN博主「Gene Xu」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/Goodbye_Youth/article/details/83960962

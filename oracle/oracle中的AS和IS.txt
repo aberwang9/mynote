@@ -1,0 +1,26 @@
+
+
+在oracle的sql或pl/sql语句中经常会看到is和as这两关键字.有时随便用哪个都可以,有时却又不能混淆使用.
+
+ 
+
+1.创建视图:只能用as
+
+比如create view my_view as select * from tmp;此时如果用is会报错.
+
+2.声明游标:只能用is
+
+例如declare
+
+cursor my_cur is
+
+select * from tmp;
+
+begin  end;
+
+ 
+
+3.as与is可以通用
+
+在创建package,procedure,function时is与as可以通用,没有区别.
+

@@ -1,0 +1,51 @@
+专家点评：JavaMelody为我们提供了一个低成本、简易的监控平台。用好JavaMelody可以帮助加强应用的健康管理、性能管理的能力，各组都可以来动手试一试，但别忘了强密码保护哦。
+简介
+JavaMelody 能够监测Java或Java EE应用程序服务器，并以图表或表格的方式显示：Java内存和Java  CPU使用情况，用户Session数量，JDBC连接数，和http请求、sql请求、jsp页面与业务接口方法（EJB3、Spring、 Guice）的执行数量，平均执行时间，错误百分比等。图表可以按天，周，月，年或自定义时间段查看。它并不是一个模拟请求类似JMeter的压力测试工具，而是一个衡量并且计算在应用上的操作信息的工具，也就是说，它只负责对行为进行监控，而不负责触发操作。它是一个免费使用与开源的jar包，你也可以理解成一个插件。
+它可以为我们的应用程序在QA或者开发上提供如下帮助：
+1.  给出平均的响应时间以及执行数
+2.  在某些操作趋势变的严重时给出提示
+3.  优化响应，提供优化依据
+4.  找出响应瓶颈的根本
+5.  证实优化策略的效果
+6.  收集系统运行时异常信息
+目前已经成功应用在ITSM3,、BPMP、信用期、易租船、智能定价、远洋壹号电商、SIMP、泛亚电商2.0等系统中。为日常排查cpu使用率高、内存泄漏、各种异常等问题提供方向标，为优化sql、http、spring函数性能提供依据，通过对性能、异常等数据的分析，可提前预知问题并提前优化与改进
+主要特性
+	支持应用服务器的部署以及监控：Tomcat 、GlassFish 、JBoss 、Jonas 、Jetty 、Weblogic 、Undertow；如果想要监控其他的服务器需要安装一些插件，详情见【用户手册地址】
+	JAVA 版本支持: 1.6 /1.6+ (JDK or JRE or JRockit from Oracle or OpenJDK or J9 from IBM)
+	语言支持： English,、French、 German、 Portuguese、中文
+	提供API接口（xml+json），以便与其他系统对接。比如zabbix。
+	支持xml配置，以及spring boot的yml配置
+	支持带认证的web查看与管理界面
+	支持IP白名单控制访问策略
+项目主页地址：https://github.com/javamelody/javamelody
+用户使用手册：https://github.com/javamelody/javamelody/wiki/UserGuide
+安装
+引入maven依赖，例子是基于spring boot项目。其他方式请参考手册
+<dependency>
+   <groupId>net.bull.javamelody</groupId>
+   <artifactId>javamelody-spring-boot-starter</artifactId>
+   <version>1.85.0</version>
+</dependency>
+在项目配置文件application.yml中添加如下配置：
+javamelody:
+  # Enable JavaMelody auto-configuration (optional, default: true)
+  enabled: true
+  # Data source names to exclude from monitoring (optional, comma-separated)
+  excluded-datasources: secretSource,topSecretSource
+  # Enable monitoring of Spring services and controllers (optional, default: true)
+  spring-monitoring-enabled: true
+  # Initialization parameters for JavaMelody (optional)
+  # See: https://github.com/javamelody/javamelody/wiki/UserGuide#6-optional-parameters
+  init-parameters:
+    # log http requests:
+    log: true
+    # to exclude images, css, fonts and js urls from the monitoring:
+    #url-exclude-pattern: (/webjars/.*|/css/.*|/images/.*|/fonts/.*|/js/.*)
+    # to aggregate digits in http requests:
+    #http-transform-pattern: \d+
+    # to add basic auth:
+    #authorized-users: admin:pwd
+    # to change the default storage directory:
+    #storage-directory: /tmp/javamelody
+    # to change the default "/monitoring" path:
+    #monitoring-path: /admin/performance

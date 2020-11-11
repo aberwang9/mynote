@@ -1,0 +1,90 @@
+jps (JVM Process Status）: 类似 UNIX 的 ps 命令。用户查看所有 Java 进程的启动类、传入参数和 Java 虚拟机参数等信息；
+jstat（ JVM Statistics Monitoring Tool）: 用于收集 HotSpot 虚拟机各方面的运行数据;
+jinfo (Configuration Info for Java) : Configuration Info forJava,显示虚拟机配置信息;
+jmap (Memory Map for Java) :生成堆转储快照;
+jhat (JVM Heap Dump Browser ) : 用于分析 heapdump 文件，它会建立一个 HTTP/HTML 服务器，让用户可以在浏览器上查看分析结果;
+jstack (Stack Trace for Java):生成虚拟机当前时刻的线程快照，线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合。
+
+
+jstat: 监视虚拟机各种运行状态信息
+
+jstat（JVM Statistics Monitoring Tool） 使用于监视虚拟机各种运行状态信息的命令行工具。 它可以显示本地或者远程（需要远程主机提供 RMI 支持）虚拟机进程中的类信息、内存、垃圾收集、JIT 编译等运行数据，在没有 GUI，只提供了纯文本控制台环境的服务器上，它将是运行期间定位虚拟机性能问题的首选工具。
+jstat 命令使用格式：
+
+比如 jstat -gc -h3 31736 1000 10表示分析进程 id 为 31736 的 gc 情况，每隔 1000ms 打印一次记录，打印 10 次停止，每 3 行后打印指标头部。
+
+常见的 option 如下：
+jstat -class vmid ：显示 ClassLoader 的相关信息；
+jstat -compiler vmid ：显示 JIT 编译的相关信息；
+jstat -gc vmid ：显示与 GC 相关的堆信息；
+jstat -gccapacity vmid ：显示各个代的容量及使用情况；
+jstat -gcnew vmid ：显示新生代信息；
+jstat -gcnewcapcacity vmid ：显示新生代大小与使用情况；
+jstat -gcold vmid ：显示老年代和永久代的信息；
+jstat -gcoldcapacity vmid ：显示老年代的大小；
+jstat -gcpermcapacity vmid ：显示永久代大小；
+jstat -gcutil vmid ：显示垃圾收集信息；
+另外，加上 -t参数可以在输出信息上加一个 Timestamp 列，显示程序的运行时间。
+
+jstat -gc -t -h3 31736 1000 10输出解释
+	S0  — Heap上的 Survivor space 0 区已使用空间的百分比 
+	S0C：S0当前容量的大小 
+	S0U：S0已经使用的大小 
+	S1  — Heap上的 Survivor space 1 区已使用空间的百分比 
+	S1C：S1当前容量的大小 
+	S1U：S1已经使用的大小 
+	E   — Heap上的 Eden space 区已使用空间的百分比 
+	EC：Eden space当前容量的大小 
+	EU：Eden space已经使用的大小 
+	O   — Heap上的 Old space 区已使用空间的百分比 
+	OC：Old space当前容量的大小 
+	OU：Old space已经使用的大小 
+	P   — Perm space 区已使用空间的百分比 
+	MC,MU 永久区大小和已用量
+	CCSC,CCSU 压缩类空间大小和已用量
+	YGC — 从应用程序启动到采样时发生 Young GC 的次数 
+	YGCT– 从应用程序启动到采样时 Young GC 所用的时间(单位秒) 
+	FGC — 从应用程序启动到采样时发生 Full GC 的次数 
+	FGCT– 从应用程序启动到采样时 Full GC 所用的时间(单位秒) 
+	GCT — 从应用程序启动到采样时用于垃圾回收的总时间(单位秒)，它的值等于YGC+FGC
+
+jstat -class -h3 -t 23861 2000 5 类加载器相关信息
+	timestamp，-t的输出结果
+	loaded，已加载的类数量（真多。。很多都是动态代理的）
+	bytes，已加载的类总大小
+	unloaded，已卸载的类数量（多态代理的情况下，是可以卸载类的）
+	bytes，已卸载的类总大小
+	time，classLoader操作类的总耗时
+
+jstat -compiler -t -h3 23861 1000 5  显示JIT(Just-In-Time Compiler即时编译器)的相关信息
+	compiled，已编译的类（我们看到，已经编译的类和已经加载的类并不相同，但数量差距不大。 可能是懒加载行为的体现）
+	failed，？？？
+	time，耗时
+	failedType，？？？
+	failedMethod，？？？
+	
+jstat -gccapacity -t -h3 23861 2000 5 统计不同分代的容量信息
+	NGCMN，分解开来就NG_C_MN（new generation capacity minimum），新生代最小容量
+	NGCMX，最大容量
+	NGC，当前容量
+	S0C，S1C等都同上
+	MC，分解为meta cap
+	CCS，压缩
+	YGC，FGC 数量
+
+jstat -gccause -t -h5 23861 2000 10  查看gc原因以及各个分代的百分信息
+	S0 ：年轻代中第一个survivor（幸存区）已使用的占当前容量百分比
+	S1 ：年轻代中第二个survivor（幸存区）已使用的占当前容量百分比
+	E ：年轻代中Eden（伊甸园）已使用的占当前容量百分比
+	O ：old代已使用的占当前容量百分比
+	M ：元空间已使用的占当前容量百分比
+	CCS： 压缩
+	YGC ：从应用程序启动到采样时年轻代中gc次数
+	YGCT ：从应用程序启动到采样时年轻代中gc所用时间(s)
+	FGC ：从应用程序启动到采样时old代(全gc)gc次数
+	FGCT ：从应用程序启动到采样时old代(全gc)gc所用时间(s)
+	GCT：从应用程序启动到采样时gc用的总时间(s)
+	LGCC：最后一次GC原因
+	GCC：当前GC原因（No GC 为当前没有执行GC）
+
+jstat -printcompilation -h3 -t 23861 2000 5 HotSpot编译方法统计

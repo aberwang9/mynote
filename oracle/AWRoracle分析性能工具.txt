@@ -1,0 +1,24 @@
+AWR全称Automatic Workload Repository，自动负载信息库，是Oracle 10g版本后推出的一种性能收集和分析工具，
+提供了一个时间段内整个系统的报表数据。通过AWR报告，可以分析指定的时间段内数据库系统的性能。
+AWR默认每小时对数据库内存中统计信息进行采样一次，并将信息保存到磁盘中，默认保留7天，7天后旧的记录才会被覆盖。但是两个是阈值是可以调整的。
+
+使用Oracle自带的SQL Developer可以很方便的查看并导出AWR报告，激活DBA视图，连接数据库后依次选择性能-AWR即可看到AWR的配置以及具体的AWR报告。（好像需要管理员）
+
+Load Profile报表显示数据库的负载概况：
+	Redo size：每秒产生的日志大小(单位字节)，可标志数据变更频率, 可以用来估量update/insert/delete的频率。
+	Logical reads、Block changes、Physical reads、Physical writes：，评估数据库的读/写繁忙程度，判断数据库的活动性质和规模。
+	Parses、Hard parses：SQL软解析以及硬解析的次数，评估SQL是否需要优化。
+	Executes、Transactions：每秒/每事务SQL执行次数、每秒事务数.每秒产生的事务数，反映数据库任务繁重与否。
+	Recursive Call：递归调用占所有操作的比率.递归调用的百分比，如果有很多PL/SQL，那么这个值就会比较高。
+	Rollback：每秒回滚率及每事物回滚率，因为回滚很耗资源，如果回滚率过高，可能说明你的数据库经历了太多的无效操作 ,过多的回滚可能还会带来Undo Block的竞争。
+
+查看实例效率分析报表
+	Buffer Nowait %：在内存获得数据的未等待比例。这个值一般需要大于99%，否则可能存在争用。
+	Buffer Hit %：数据块在数据缓冲区中的命中率，通常应在95%以上。否则需要调整重要的参数，或者要加大db_cache_size。
+	Library Hit %：SQL在共享区的命中率，通常应该在95%以上。
+	Soft Parse %：软解析的百分比，通常应该在95%以上。，
+	Execute to Parse %：语句执行与分析的比例，反映SQL的重用率。
+
+
+更多查看
+https://blog.csdn.net/wangyiyungw/article/details/81100767

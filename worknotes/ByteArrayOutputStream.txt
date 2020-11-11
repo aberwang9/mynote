@@ -24,4 +24,5 @@ OutputStream；
 		BufferedOutputStream是一个缓冲数据输出流接口,capacity = 8192 = 8KB
 		
 	在java中有ByteArrayOutputStream ，ByteArrayInputStream ，StringBufferInputStream直接访问内存， 
+	
 		 其中ByteArrayInputStream StringBufferInputStream可以读，ByteArrayOutputStream可以向内存写数据

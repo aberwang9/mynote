@@ -1,0 +1,52 @@
+相关类
+	TransactionalEventListener注解
+	
+	
+	底层类：
+	TransactionSynchronizationManager
+	AbstractPlatformTransactionManager
+	TransactionSynchronization
+	相关解释：
+		TransactionSynchronization是一个回调接口，用于在事务执行过程中的重要时间点执行额外的逻辑，AbstractPlatformTransactionManager中通过TransactionSynchronizationManager间接调用绑定到当前事务所在线程的TransactionSynchronization集合的对应的回调方法；
+
+		TransactionSynchronizationManager使用ThreadLocal管理当前事务的TransactionSynchronization集合；
+
+		ResourceHolderSynchronization是用来同步资源状态的，这里的资源就是Spring 事务框架中的资源的概念，就是JDBC里的Connection，Hibernate里的Session，JPA里的EntityManager，Kafka里的Producer；回到ResourceHolderSynchronization，比如KafkaResourceSynchronization提供的能力是当前ResourceHolderSynchronization（KafkaResourceSynchronization）对象所绑定的事务完成之后，间接调用kafka的Producer的commitTransaction或者abortTransaction方法。
+
+
+
+TransactionSynchronizationAdapter 抽象基类API 详解：
+
+	AFTER_COMPLETION ：指定目标方法在事务完成时执行，这里的完成是指无论事务是成功提交还是事务回滚了，之后需要运行的方法。
+	
+	抽象基类实现Spring的标准事务工作流,担任基础混凝土平台事务管理器如JtaTransactionManager和DataSourceTransactionManager。
+	
+		这个基类提供了以下工作流程处理:
+
+				1. 确定如果有现有的事务;
+				2. 应用适当的传播行为;
+				3. 如果有必要暂停和恢复事务;
+				4. 提交时检查rollback-only标记;
+				5. 应用适当的修改当回滚(实际回滚或设置rollback-only);
+				6. 触发同步回调注册(如果事务同步是激活的)；
+				
+				
+				子类必须实现特定的模板方法对特定状态的事务，例如：.: begin,suspend, resume, commit, rollback。最重要的是必须提供的抽象和具体实现;其余,提供默认值,所以最重要的是可选的。
+
+事务同步对于注册回调是一种通用的机制,在事务完成时调用，这主要是内部使用的数据访问JDBC支持类,Hibernate,JDO等运行时在一个JTA事务，注册资源打开关闭在事务完成的事务时间内,允许例如重用相同的Hibernate会话内的事务，相同的机制也可以用于自定义同步需要在应用程序中，这个类是可序列化的,以允许序列化的事务策略以及代理事务拦截器，这由子类决定如果他们想使他们的状态是可序列化的。他们应该实现java . io .可串行化的标记接口在这种情况下,和一个潜在的私人readObject()方法(根据Java序列化规则)如果他们需要恢复任何瞬态。
+				
+						
+				
+TransactionDefinition定义事物的传播属性：
+	常量名称 常量解释 
+	PROPAGATION_REQUIRED 支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择，也是 Spring 默认的事务的传播。 
+	PROPAGATION_REQUIRES_NEW 新建事务，如果当前存在事务，把当前事务挂起。新建的事务将和被挂起的事务没有任何关系，是两个独立的事务，外层事务失败回滚之后，不能回滚内层事务执行的结果，内层事务失败抛出异常，外层事务捕获，也可以不处理回滚操作 
+	PROPAGATION_SUPPORTS 支持当前事务，如果当前没有事务，就以非事务方式执行。 
+	PROPAGATION_MANDATORY 支持当前事务，如果当前没有事务，就抛出异常。 
+	PROPAGATION_NOT_SUPPORTED 以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。 
+	PROPAGATION_NEVER 以非事务方式执行，如果当前存在事务，则抛出异常。 
+	PROPAGATION_NESTED 	如果一个活动的事务存在，则运行在一个嵌套的事务中。如果没有活动事务，则按REQUIRED属性执行。它使用了一个单独的事务，这个事务拥有多个可以回滚的保存点。内部事务的回滚不会对外部事务造成影响。它只对DataSourceTransactionManager事务管理器起效。
+				
+				
+
+	

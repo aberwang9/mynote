@@ -1,0 +1,8 @@
+Oracle中的类型有很多种，主要可以分为以下几类： 
+	
+	1、字符串类型。如：char、nchar、varchar2、nvarchar2。 
+	2、数值类型。如：int、number(p,s)、integer、smallint。 
+	3、日期类型。如：date、interval、timestamp。 
+	4、PL/SQL类型。如：pls_integer、binary_integer、binary_double(10g)、binary_float(10g)、boolean。plsql类型是不能在sql环境中使用的，比如建表时。 
+	5、自定义类型。
+

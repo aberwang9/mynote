@@ -1,0 +1,36 @@
+lambda表达式详解 学习
+	匿名：没有一个确定的名称
+	函数：lambda不属于一个特定的类，但是却有参数列表、函数主体、返回类型、异常列表
+	传递：可以作为参数传递给方法、或者存储在变量中
+	简洁：不需要写很多模板代码
+	
+	基本语法：
+		(parameters) -> expression
+			1.显示  ：  （String s）-> {return s+"aber";}
+			2.简写  ：   （String s） -> s + "aber"
+	
+	函数式接口 ： 接口中只有一个抽象方法
+			Runnable r1 = () -> System.out.println("Hello World 1");
+			Runnable r2 = new Runnable(){
+				public void run(){
+					System.out.println("Hello World 2");
+				}
+			};
+			public static void process(Runnable r){
+				r.run();
+			}
+			process(r1);
+			process(r2);
+			process(() -> System.out.println("Hello World 3"))
+			
+	类型检查、类型推断、限制
+		尽量不要使用局部变量，如果使用局部变量，那得把局部变量设置为final的，原因就是局部变量是存放在栈中的，存放在栈中的变量只能被读取，不能被改变，这类似于Java中的final限定符，
+		为了在编译的时候可以检查出来这个错误，我们应该在lambda表达式使用到局部变量的地方将局部变量使用final进行限制。
+		对于实例变量的使用，我们可以正常使用，因为实例变量存放于内存的堆中，堆中的变量是可以被读取和改变的。这类似于Java中将对象引用作为参数传递到一个方法中的用法。
+
+	方法引用   仅仅调用特定方法的Lambda的一种快捷写法。
+	
+			(Apple a) -> a.getWeight()			 			 Apple::getWeight
+			() -> Thread.currentThread().dumpStack()		 Thread.currentThread()::dumpStack
+			(str, i) -> str.substring(i) 					 String::substring
+			(String s) -> System.out.println(s) 			 System.out::println

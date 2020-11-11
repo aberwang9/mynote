@@ -1,0 +1,28 @@
+PostConstruct注释用于在完成依赖项注入以执行任何初始化之后需要执行的方法。必须在类投入使用之前调用此方法。
+
+	@PostConstruct
+	public void someMethod(){}
+	
+	被@PostConstruct修饰的方法会在服务器加载Servlet的时候运行，并且只会被服务器执行一次。PostConstruct在构造函数之后执行，init（）方法之前执行。PreDestroy（）方法在destroy（）方法知性之后执行
+	
+	服务器加载Servlet -> servlet构造函数 -》 @PostConstruct方法 -》 init()方法 -》 service()方法 -》 destroy()方法 -》 @PreDestroy() 方法 服务器卸载Servlet完毕
+	
+	如果想在生成对象时完成某些初始化操作，而偏偏这些初始化操作又依赖于依赖注入，那么久无法在构造函数中实现。为此，可以使用@PostConstruct注解一个方法来完成初始化，@PostConstruct注解的方法将会在依赖注入完成后被自动调用。
+
+	Constructor >> @Autowired >> @PostConstruct
+	
+	使用注意事项
+
+	（1）方法注解
+	（2）同类中只有一个方法使用
+	（3）被注解方法不得有任何参数
+	（4）被注解方法返回值为void
+	（5）被注解方法不得抛出已检查异常
+	（6）不能注解静态方法。
+	
+	应用场景：
+	
+	如果想在生成对象时候完成某些初始化操作，而偏偏这些初始化操作又依赖于依赖注入，那么就无法在构造函数中实现。为此，可以使用@PostConstruct注解一个方法来完成初始化，@PostConstruct注解的方法将会在依赖注入完成后被自动调用。
+
+@PostConstruct注解和@PreDestroy是两个作用于Servlet生命周期的方法注解，实现Bean初始化之前和销毁之前的自定义操作。
+

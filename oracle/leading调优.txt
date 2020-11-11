@@ -1,0 +1,73 @@
+1、使用leading和use_nl来设置表的查询顺序，来加快查询速度，一般把小表设为第一个表。
+/*+LEADING(TABLE)*/
+　　将指定的表作为连接次序中的首表.
+/*+USE_NL(TABLE)*/
+　　将指定表与嵌套的连接的行源进行连接,并把指定表作为内部表.
+成本计算方法：
+设小表100行，大表100000行。
+
+两表均有索引：
+如果小表在内，大表在外(驱动表)的话，则扫描次数为：
+100000+100000*2 (其中2表示IO次数，一次索引，一次数据)
+如果大表在内，小表在外(驱动表)的话，则扫描次数为：
+100+100*2.
+
+两表均无索引：
+如果小表在内，大表在外的话，则扫描次数为：
+100000+100*100000
+如果大表在内，小表在外的话，则扫描次数为：
+100+100000*100
+
+注意：如果一个表有索引，一个表没有索引，ORACLE会将没有索引的表作驱动表。如果两个表都有索引，则外表作驱动表。如果两个都没索引的话，则也是外表作驱动表。
+
+2、使用index直接匹配索引来查询数据提高查询速度
+/*+INDEX(TABLE INDEX_NAME)*/
+　　表明对表选择索引的扫描方法.
+3、当判断某几个表中是否存在某种关系的行时可使用rownum=1来作为条件而加快速度，如果必须有多行才满足条件时，可设置rownum <= n。
+例如：获得一个v_count值判断是否大于0
+equipment表 几万条，controledpnsnrange 几千条
+select
+count(sc.pmnum)
+into
+v_count
+from
+equipment e,
+sal_controledpnsnrange sc
+where
+(sc.new_min_item_no <= e.itemnum)
+and (sc.new_max_item_no >= e.itemnum)
+and (sc.new_min_serial_no <= e.serialnum)
+and (sc.new_max_serial_no >= e.serialnum)
+and e.itemnum = a_item_no;
+执行时间大约为3分钟。
+代码修改后:
+select /*+ leading(e) use_nl(sc) */
+count(sc.pmnum)
+into
+v_count
+from
+equipment e,
+sal_controledpnsnrange sc
+where
+(sc.new_min_item_no <= e.itemnum)
+and (sc.new_max_item_no >= e.itemnum)
+and (sc.new_min_serial_no <= e.serialnum)
+and (sc.new_max_serial_no >= e.serialnum)
+and e.itemnum = a_item_no;
+执行时间大约为45秒。
+代码再次修改后：
+select /*+ leading(e) use_nl(sc) */
+count(sc.pmnum)
+into
+v_count
+from
+equipment e,
+sal_controledpnsnrange sc
+where
+(sc.new_min_item_no <= e.itemnum)
+and (sc.new_max_item_no >= e.itemnum)
+and (sc.new_min_serial_no <= e.serialnum)
+and (sc.new_max_serial_no >= e.serialnum)
+and e.itemnum = a_item_no
+and rownum = 1;
+执行时间大约为4秒。

@@ -1,0 +1,31 @@
+dual是一个虚拟表，用来构成select的语法规则，oracle保证dual里面永远只有一条记录。我们可以用它来做很多事情。
+1、查看当前用户，可以在 SQL Plus中执行下面语句 select user from dual;
+2、用来调用系统函数
+　　select to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') from dual;--获得当前系统时间
+　　select SYS_CONTEXT('USERENV','TERMINAL') from dual;--获得主机名
+　　select SYS_CONTEXT('USERENV','language') from dual;--获得当前 locale
+　　select dbms_random.random from dual;--获得一个随机数
+
+3、得到序列的下一个值或当前值，用下面语句
+　　select your_sequence.nextval from dual;--获得序列your_sequence的下一个值
+　　select your_sequence.currval from dual;--获得序列your_sequence的当前值
+
+4、可以用做计算器 select 7*9 from dual;
+
+/**获得当前登录用户**/
+select user from dual;
+/**获得当前系统时间***/
+select sysdate from dual;
+/**获得当前系统时间**/
+select to_char(sysdate,'yyyy-MM-dd hh24:mi:ss') as sysdt from dual;
+/**作为计算器使用**/
+select 1+2*3/4 from dual;
+/**获取主机名***/
+select SYS_CONTEXT('USERENV','TERMINAL') from dual;
+/**获取当前locale**/
+select SYS_CONTEXT('USERENV','language') from dual;
+
+
+select owner,object_name,object_type from dba_objects where object_name like '%DUAL%';
+
+ORACLE对DUAL表的操作做了一些内部处理,尽量保证DUAL表中只返回一条记录.当然这写内部操作是不可见的

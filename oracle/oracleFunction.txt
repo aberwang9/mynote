@@ -1,0 +1,151 @@
+oracle functoin
+定义
+函数用于计算和返回一个结果值，把经常需要进行的计算写成函数,函数的调用是表达式的一部分。
+     函数与过程在创建的形式上有些相似，也是编译后放在内存中供用户使用。
+     函数必须有一个返回值，而过程没有做强制的规定。
+     RETURN在声明部分需要定义一个返回参数的类型，而在函数体中必须有一个RETURN语句。如果函数结束时还没有遇到返回语句，就会发生错误。
+	 
+	 
+1、函数与存储过程的不同点
+（1）、函数就是一个有返回值的过程，且是必须。
+（2）、存储过程只能作为一个plsql语句调用，而函数不但可以作为plsql语句调用，符合约束的函数还可以作为sql表达式的一部分使用。
+（3）、对于无参函数的定义和调用都没有圆括号，但无参存储过程需要。
+
+2、函数与存储过程的相同点
+（1）、都存储在数据库中，并且可在块中调用，代码都有定义部分、可执行部分、异常处理部分。
+（2）、都有in,out,in out三种参数，都可以使用缺省值，都可以通过out模式返回一个或多个值。
+（3）、都可以使用位置表示法和名称表示法。
+
+
+
+CREATE OR REPLACE FUNCTION FUN_SVVD_SPLIT(
+         SVVD IN VARCHAR2,
+         PART IN VARCHAR2
+      )RETURN VARCHAR2 IS
+              V_SVV VARCHAR2(120);
+              V_DIR VARCHAR2(1);
+              V_SVCLOOP VARCHAR(10);
+              V_VOYAGE VARCHAR(10);
+              V_VESSEL VARCHAR(10);
+              V_S1 VARCHAR(20);
+      BEGIN
+              IF SVVD IS NULL THEN
+                 RETURN NULL;
+              END IF;
+              V_SVV := regexp_substr(SVVD,'[A-Z0-9]+-[A-Z0-9]+-[0-9]+') ;
+              V_DIR := trim(substr(SVVD,length(V_SVV)+1));
+              V_SVCLOOP := regexp_substr(V_SVV,'^[A-Z]+[0-9]*');
+              V_S1 := trim(substr(V_SVV,instr(V_SVV,'-')+1));
+              V_VESSEL := trim(substr(V_S1,0,instr(V_S1,'-')-1));
+              V_VOYAGE := trim(substr(V_S1,instr(V_S1,'-')+1));
+
+              IF PART = 'SVC' THEN
+                 RETURN V_SVCLOOP;
+              ELSIF PART = 'VSL' THEN
+                RETURN V_VESSEL;
+              ELSIF PART = 'VOY' THEN
+                     RETURN V_VOYAGE;
+              ELSIF PART = 'DIR' THEN
+                    RETURN V_DIR;
+              ELSE
+                    RETURN NULL;
+              END IF;
+      END;
+	  
+
+/************************************************************************************************************************************************/
+create or replace package TEST_ABER_PACKAGE is
+
+  -- Author  : TEMP_WANGBO
+  -- Created : 2020/4/24 10:02:51
+  -- Purpose : test
+  
+  -- Public type declarations
+  --type <TypeName> is <Datatype>;
+  
+  -- Public constant declarations
+  AUTHOR_NAME_CONST constant VARCHAR2(20) := 'aberwang9';
+
+  -- Public variable declarations
+  V_COUNT_ALL_DATA  NUMBER(10);
+  V_COUNT_CURR_MANIPOLATION number(10);
+
+  -- Public  procedure declarations
+  procedure COUNT_UPDATE_DATA(
+    V_COUNT_UPDATA in number,
+    V_COUNT_UPDATAED out number
+    );
+    
+  -- Public function  declarations
+  function COUNT_INSERT_DATA (
+    V_COUNT_INSERT in number,--不用加位数，（申明阶段不需要分配空间）
+    V_COUNT_INSERTED out number
+    ) 
+    return number;
+  
+end TEST_ABER_PACKAGE;
+	  
+/************************************************************************************************************************************************/
+create or replace package body TEST_ABER_PACKAGE_BODY is
+
+
+  -- Private type declarations
+  --type <TypeName> is <Datatype>;
+  
+  -- Private constant declarations
+  --AUTHOR_NAME_CONST constant varchar2(20) := "aberwang9";
+  UUID_CONST constant number(10) := 10;
+
+  -- Private variable declarations
+  P_V_CURR_OPRATE_TYPE varchar2(20);
+
+ procedure COUNT_UPDATE_DATA(
+    V_COUNT_UPDATA in number,
+    V_COUNT_TIME out number,
+    V_COUNT_UPDATAED out number
+    ) is
+    V_START number(14) := 0;
+    V_END number(14) := 0;
+    begin
+      P_V_CURR_OPRATE_TYPE := 'UPDATE';
+      V_COUNT_UPDATAED := 1;
+      SELECT (SYSDATE - TO_DATE('1970-1-1 8', 'YYYY-MM-DD HH24')) * 86400000 + TO_NUMBER(TO_CHAR(SYSTIMESTAMP(3), 'FF')) AS MILLIONS INTO V_START  FROM DUAL;
+     
+      for i in 1..V_COUNT_UPDATA loop
+        V_COUNT_UPDATAED := i;
+        update WBL_INFO_ABER a  set a.WBL_NUM = UUID_CONST+100,a.WBL_OPREATE_TYPE = P_V_CURR_OPRATE_TYPE 
+        where a.WBL_UUID = UUID_CONST+i;
+        
+       end loop;
+      
+       SELECT (SYSDATE - TO_DATE('1970-1-1 8', 'YYYY-MM-DD HH24')) * 86400000 + TO_NUMBER(TO_CHAR(SYSTIMESTAMP(3), 'FF')) AS MILLIONS INTO V_START  FROM DUAL;
+       V_COUNT_TIME := V_END - V_START;
+    end;
+  -- Public function  declarations
+  function COUNT_INSERT_DATA (
+    V_COUNT_INSERT in number,
+    V_COUNT_TIME out number
+    ) 
+    return number
+    is
+    V_START number(14) := 0;
+    V_END number(14) := 0;
+    V_COUNT_INSERTED number(14) := 0;
+    begin
+      P_V_CURR_OPRATE_TYPE := 'INSERT';
+      V_COUNT_INSERTED := 1;
+      SELECT (SYSDATE - TO_DATE('1970-1-1 8', 'YYYY-MM-DD HH24')) * 86400000 + TO_NUMBER(TO_CHAR(SYSTIMESTAMP(3), 'FF')) AS MILLIONS INTO V_START  FROM DUAL;
+     
+      for i in 1..V_COUNT_INSERT loop
+        V_COUNT_INSERTED := i;
+        insert into WBL_INFO_ABER (WBL_UUID,WBL_NUM,WBL_OPREATE_TYPE) 
+         values (UUID_CONST + i,
+                UUID_CONST+i,
+                P_V_CURR_OPRATE_TYPE);
+       end loop;
+       V_COUNT_TIME := V_END - V_START;
+       SELECT (SYSDATE - TO_DATE('1970-1-1 8', 'YYYY-MM-DD HH24')) * 86400000 + TO_NUMBER(TO_CHAR(SYSTIMESTAMP(3), 'FF')) AS MILLIONS INTO V_START  FROM DUAL;
+       
+       return (V_COUNT_INSERTED);
+    end;
+end TEST_ABER_PACKAGE_BODY;

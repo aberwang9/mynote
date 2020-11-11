@@ -12,3 +12,8 @@
 		是一种加载优先级：数值越小级别越高
 		
 @EnableWebSecurity
+
+@NonNull可以标注在方法、字段、参数之上，表示对应的值不可以为空
+@Nullable注解可以标注在方法、字段、参数之上，表示对应的值可以为空
+
+@TransactionEventListener  将这个注解标注在某个方法上，那么就将这个方法声明为了一个事务事件处理器，而具体的事件类型则是由TransactionalEventListener.phase属性进行定义的

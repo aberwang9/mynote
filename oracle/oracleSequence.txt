@@ -1,0 +1,95 @@
+1. Create Sequence
+    首先要有CREATE SEQUENCE或者CREATE ANY SEQUENCE权限。
+
+    创建语句如下：
+/*****************************************sequence*******star***********************************************************************/
+					CREATE SEQUENCE seqTest
+					INCREMENT BY 1 -- 每次加几个
+					START WITH 1 -- 从1开始计数
+					NOMAXvalue -- 不设置最大值
+					NOCYCLE -- 一直累加，不循环
+					CACHE 10; --设置缓存cache个序列，如果系统down掉了或者其它情况将会导致序列不连续，也可以设置为---------NOCACHE
+/*****************************************sequence*******start***********************************************************************/
+
+		说明：
+
+		 minvalue：序列最小值
+
+		 maxvalue/nomaxvalue：序列最大值/没有最大值
+
+		 start with 1：序列从1开始
+
+		 increment by 1：每次增加1
+
+		 cache/nocache：nocache不缓存。cache缓存。开启缓存，效率高，只是如果数据库宕机了，缓存丢失，会出现序列跳号情况。
+		 
+		 
+2.查看已有sequence：
+select * from user_sequences; 
+Select * from all_sequences;
+
+3.得到Sequence值
+两种方式
+①　select last_number from user_sequences where sequence_name='SEQ_ON_USER';  
+②　select SEQ_ON_USER.nextval from sys.dual;  
+ 
+定义好sequence后，你就可以用currVal，nextVal取得值。
+    CurrVal：返回 sequence的当前值
+    NextVal：增加sequence的值，然后返回 增加后sequence值
+
+  得到值语句如下：
+SELECT Sequence名称.CurrVal FROM DUAL;
+
+  如得到上边创建Sequence值的语句为：
+
+select seqtest.currval from dual
+
+ 
+在Sql语句中可以使用sequence的地方：
+    - 不包含子查询、snapshot、VIEW的 SELECT 语句
+    - INSERT语句的子查询中
+    - INSERT语句的values中
+    - UPDATE 的 SET中
+
+ 
+
+如在插入语句中
+
+insert into 表名(id,name)values(seqtest.Nextval,'sequence 插入测试');
+
+ 
+
+ 注：
+
+    - 第一次NEXTVAL返回的是初始值；随后的NEXTVAL会自动增加你定义的INCREMENT BY值，然后返回增加后的值。
+      CURRVAL 总是返回当前SEQUENCE的值，但是在第一次NEXTVAL初始化之后才能使用CURRVAL，否则会出错。
+       一次NEXTVAL会增加一次 SEQUENCE的值，所以如果你在同一个语句里面使用多个NEXTVAL，其值就是不一样的。
+    - 如果指定CACHE值，ORACLE就可以预先在内存里面放置一些sequence，这样存取的快些。cache里面的取完后，oracle自动再取一组 到cache。 使用cache或许会跳号， 
+	比如数据库突然不正常down掉（shutdown abort),cache中的sequence就会丢失. 所以可以在create sequence的时候用nocache防止这种情况。
+	
+	
+/*******************************************************************************************************************************************************************************************************/
+		--查看当前用户的sequence
+		select * from user_sequences;
+		select last_number from all_sequences where sequence_name = 'SEQABERTEST';
+		--查看全部sequence
+		select * from all_sequences;
+
+		--create sequence
+		create sequence seqAberTest
+		increment by 1
+		start with 1
+		nocycle
+		cache 10;
+
+		--得到值(currVal，nextVal取得值)
+		select seqAberTest.Nextval from dual;
+		select seqAberTest.currVal from dual;
+
+		--alter sequence
+		alter sequence seqAberTest 
+		maxvalue 10
+		nocache;
+
+		--drop sequence
+		drop sequence seqAberTest;

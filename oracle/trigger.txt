@@ -1,0 +1,75 @@
+触发器
+    数据库触发器是一个与表相关联的、存储的PL/SQL程序。每当一个特定的数据操作语句(Insert,update,delete)在指定的表上发出时，Oracle自动地执行触发器中定义的语句序列
+
+
+触发器可用于
+	数据确认 
+	实施复杂的安全性检查
+	做审计，跟踪表上所做的数据操作等
+	数据的备份和同步
+	
+触发器类型
+	语句级触发器：	在指定的操作语句操作之前或之后执行一次，不管这条语句影响了多少行。
+	行级触发器（FOR EACH ROW） ：触发语句作用的每一条记录都被触发。在行级触发器中使用old和new伪记录变量, 识别值的状态。
+（1）DML触发器
+	对数据表进行DML语句操作（如insert、update、delete）时所触发的触发器，可以分为：
+	语句级触发器或行级触发器：行级触发器会对数据库表中的受影响的每一行触发一次触发器代码，语句级触发器则只触发一次，与语句所影响到的行数无关
+	before触发器或after触发器：before触发器在触发事件发生之前执行触发器代码，after触发器则在触发事件发生之后执行
+
+	语法：
+		CREATE  [or REPLACE] TRIGGER  触发器名
+		   {BEFORE | AFTER}
+		   {DELETE | INSERT | UPDATE [OF 列名]}
+		   ON  表名
+		   [FOR EACH ROW [WHEN(条件) ] ]
+		begin
+		   PLSQL 块
+		End;
+		
+（2）替代触发器（instead of触发器）
+	对视图进行操作时定义的触发器，替代触发器只能定义在视图上
+	语法：
+	create [or replace] trigger trigger_name --触发器名称
+		instead of trigger_event --触发事件
+		on view_name --视图名称
+	for each row  --替代触发器必须指定为行级的触发器
+		[when trigger_condition] --触发条件
+	trigger_body --触发体，PL/SQL
+
+（3）系统事件触发器
+	对数据库实例或某个用户模式进行操作时定义的触发器，可以分为：
+	数据库系统触发器和用户触发器
+
+
+
+/***实例***/
+CREATE OR REPLACE TRIGGER ODS_DND_VESSEL_DELAY_TRIGGER AFTER INSERT OR UPDATE OR DELETE
+   ON ODS_MAINT.ODS_DND_VESSEL_DELAY
+   FOR EACH ROW
+DECLARE
+   V_TYPE VARCHAR2(20);
+   V_BIZ_CDE VARCHAR2(50);
+   V_ODS_UUID NUMBER(20);
+BEGIN
+  V_BIZ_CDE := :NEW.ID;
+  V_ODS_UUID := :NEW.ID;
+   IF INSERTING THEN
+  --INSERT触发
+  V_TYPE := 'INSERT';
+ELSIF UPDATING THEN
+  --UPDATE触发
+  V_TYPE := 'UPDATE';
+ELSIF DELETING THEN
+  --DELETE触发
+  V_TYPE := 'DELETE';
+  V_BIZ_CDE := :OLD.ID;
+  V_ODS_UUID := :OLD.ID;
+END IF;
+
+  INSERT INTO ODS_TRIGGER_LOG(ODS_TRIGGER_LOG_UUID, TABLE_NME, ACTION, ODS_UUID, BIZ_CDE, STATUS
+          , REC_CRE_USER,REC_CRE_DT, REC_UPD_USER, REC_UPD_DT,REC_VER,MSG_DEP)
+  VALUES
+  (sys_guid(), 'ODS_DND_VESSEL_DELAY', V_TYPE, V_ODS_UUID, V_BIZ_CDE, 'NEW'
+          , 'system', systimestamp, 'system', systimestamp, '0',to_char(V_ODS_UUID));
+
+END;

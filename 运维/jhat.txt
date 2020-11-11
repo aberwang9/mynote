@@ -1,0 +1,33 @@
+
+jps (JVM Process Status）: 类似 UNIX 的 ps 命令。用户查看所有 Java 进程的启动类、传入参数和 Java 虚拟机参数等信息；
+jstat（ JVM Statistics Monitoring Tool）: 用于收集 HotSpot 虚拟机各方面的运行数据;
+jinfo (Configuration Info for Java) : Configuration Info forJava,显示虚拟机配置信息;
+jmap (Memory Map for Java) :生成堆转储快照;
+jhat (JVM Heap Dump Browser ) : 用于分析 heapdump 文件，它会建立一个 HTTP/HTML 服务器，让用户可以在浏览器上查看分析结果;
+jstack (Stack Trace for Java):生成虚拟机当前时刻的线程快照，线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合。
+
+
+jhat -stack false -refs false wangbo_jmap_dump.bin  
+
+
+
+-stack false/true 关闭跟踪对象分配调用栈。注意，如果堆镜像中分配位置信息不可用，你不得不设置成false。默认是true。
+
+-refs false/true    关闭跟踪对象引用。默认是true。默认情况下，back pointers（指向给定对象a.ka的引用，或者in-coming应用）适用于堆中的所有对象。
+
+-port port-number 给jhat的HTTP服务器设置端口。默认是7000。
+
+-exclude exclude-file 指定一个数据成员列表文件，排除可达对象查询。例如,如果文件列出 java.lang.String.value, 
+那么，从指定对象o中计算出的可达对象列表，只要引用路径涉及java.lang.String.value 字段将不会被考虑在内。
+
+-baseline baseline-dump-file 指定一个基线堆镜像。两个堆中的相同对象ID将被标记为非new。其他对象标记为new。对于比较两个不同的堆镜像是有用的。
+
+-debug int 设置debug级别。0 debug输出。设置更高级别获得更多模式。
+
+-version 报告版本号，退出。
+
+-h 帮助 
+
+-help 帮助
+
+-J<flag> JVM参数

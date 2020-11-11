@@ -1,0 +1,25 @@
+jps (JVM Process Status）: 类似 UNIX 的 ps 命令。用户查看所有 Java 进程的启动类、传入参数和 Java 虚拟机参数等信息；
+jstat（ JVM Statistics Monitoring Tool）: 用于收集 HotSpot 虚拟机各方面的运行数据;
+jinfo (Configuration Info for Java) : Configuration Info forJava,显示虚拟机配置信息;
+jmap (Memory Map for Java) :生成堆转储快照;
+jhat (JVM Heap Dump Browser ) : 用于分析 heapdump 文件，它会建立一个 HTTP/HTML 服务器，让用户可以在浏览器上查看分析结果;
+jstack (Stack Trace for Java):生成虚拟机当前时刻的线程快照，线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合。
+
+
+jstack -help
+jstack  27672 > wangbo_jstack.txt  
+jstack -m -l 27672 > wangbo_jstack.txt  
+
+
+线程状态：
+	RUNNABLE,在虚拟机内执行的。运行中状态，可能里面还能看到locked字样，表明它获得了某把锁。
+	BLOCKED,受阻塞并等待监视器锁。被某个锁(synchronizers)給block住了。
+	WATING,无限期等待另一个线程执行特定操作。等待某个condition或monitor发生，一般停留在park(), wait(), sleep(),join() 等语句里。
+	TIMED_WATING,有时限的等待另一个线程的特定操作。和WAITING的区别是wait() 等语句加上了时间限制 wait(timeout)。
+	TERMINATED,已退出的。
+	
+调用修饰
+locked <地址> 目标：使用synchronized申请对象锁成功,监视器的拥有者。
+waiting to lock <地址> 目标：使用synchronized申请对象锁未成功,在迚入区等待。
+waiting on <地址> 目标：使用synchronized申请对象锁成功后,释放锁幵在等待区等待。
+parking to wait for <地址> 目标

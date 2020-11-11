@@ -1,0 +1,28 @@
+1 并集
+	一谈到并集就会用到union以及union all，两者的区别如下：
+		union:对两个表的并集操作，不包含重复行，相当于distinct,同时进行默认规则的排序。默认规则即：按照select后面的查询字段出现的顺序进行排序。
+		union all:对两个表的并集操作，包含重复行，且不排序。
+	
+	
+2 交集 intersect
+	对两个结果集进行交集操作，不包括重复行，同时进行默认规则的排序.
+		实例：
+			1 --intersect 
+			2 select EMPNO,ENAME,SAL from EMP
+			3 intersect
+			4 select EMPNO,ENAME,SAL from EMP where SAL>'2500';
+			5 --前面是对EMP的全表查询的结果集，后面是对sal字段>2500的查询结果集
+			6 --求两个结果集的并集
+
+
+3 差集 Minus
+	对两个结果集进行差操作，不包括重复行，同时进行默认规则的排序。
+		实例：
+			1 --minus 
+			2 select EMPNO,ENAME,SAL from EMP
+			3 minus
+			4 select EMPNO,ENAME,SAL from EMP where SAL>'2500';
+			5 --前面是对EMP的全表查询的结果集，后面是对sal字段>2500的查询结果集
+			6 --求两个结果集的差集
+
+

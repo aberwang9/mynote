@@ -9,6 +9,9 @@
 时间比较：https://www.cnblogs.com/lanblogs/p/3257551.html
 select * from BD_VSL_FIXED_COST c1 WHERE c1.EFF_TO <  to_date('2019-07-02','yyyy-MM-dd')
 
+格式代码出项两次：oracle不区分大小写，to_date('2019-07-02','yyyy-MM-dd HH:mm:ss') 应该改成to_date('2019-07-02','yyyy-MM-dd hh24:mi:ss')
+另外24小时制要用 tochar  																				(sysdate, 'yyyy-MM-dd HH24:mi:ss'
+
 	<if test="effToDateTo != null">
 		AND c.EFF_TO &lt;= #{effToDateTo,jdbcType=DATE}
 	</if>
@@ -17,8 +20,8 @@ select * from BD_VSL_FIXED_COST c1 WHERE c1.EFF_TO <  to_date('2019-07-02','yyyy
 	</if>
 	
 合并： select * from table
-		union
-		select * from table
+	   union
+	   select * from table
 		
 		
 VoyageController   uploadActDt
@@ -27,3 +30,9 @@ CustPriceLvlClassController uploadLvl
 
 
 Waybillcontroller    wblExcelImport   showWaybillValMsg
+BERTH_DEP_DT_LOC
+BERTH_ARR_DT_LOC
+1、	这是中转港维度 抵港箱量 装载箱量
+TEMP.PORT_CDE,TEMP.F_POL_CDE,TEMP.L_POD_CDE,TEMP.PRE_TRANS_TYPE,TEMP.NXT_TRANS_TYPE;
+
+查询拖车动态

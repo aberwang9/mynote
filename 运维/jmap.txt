@@ -1,0 +1,31 @@
+jps (JVM Process Status）: 类似 UNIX 的 ps 命令。用户查看所有 Java 进程的启动类、传入参数和 Java 虚拟机参数等信息；
+jstat（ JVM Statistics Monitoring Tool）: 用于收集 HotSpot 虚拟机各方面的运行数据;
+jinfo (Configuration Info for Java) : Configuration Info forJava,显示虚拟机配置信息;
+jmap (Memory Map for Java) :生成堆转储快照;
+jhat (JVM Heap Dump Browser ) : 用于分析 heapdump 文件，它会建立一个 HTTP/HTML 服务器，让用户可以在浏览器上查看分析结果;
+jstack (Stack Trace for Java):生成虚拟机当前时刻的线程快照，线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合。
+
+jmap
+-dump:[live,]format=b,file=<filename> 使用hprof二进制形式,输出jvm的heap内容到文件=. live子选项是可选的，假如指定live选项,那么只输出活的对象到文件.
+jmap -dump:format=b,file=wangbo_jmap_dump.bin 27672 (使用比较多)
+
+
+-finalizerinfo 打印正等候回收的对象的信息.
+ jmap -finalizerinfo 23861 > wangbo_jmap_finalizerinfo.txt
+
+
+-heap 打印heap的概要信息，GC使用的算法，heap的配置及wise heap的使用情况.
+jmap -heap 23861
+
+
+-histo[:live] 打印每个class的实例数目,内存占用,类全名信息. VM的内部类名字开头会加上前缀”*”. 如果live子参数加上后,只统计活的对象数量.
+jmap -histo:live 23861 > wangbo_jamp_histo.txt
+
+
+-permstat 打印classload和jvm heap长久层的信息. 包含每个classloader的名字,活泼性,地址,父classloader和加载的class数量. 另外,内部String的数量和占用内存数也会打印出来.
+
+-F 强迫.在pid没有相应的时候使用-dump或者-histo参数. 在这个模式下,live子参数无效.
+
+-h | -help 打印辅助信息
+
+-J 传递参数给jmap启动的jvm.

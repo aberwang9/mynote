@@ -1,0 +1,31 @@
+常用的 T，E，K，V，？
+
+	本质上这些个都是通配符，没啥区别，只不过是编码时的一种约定俗成的东西。比如上述代码中的 T ，我们可以换成 A-Z 之间的任何一个 字母都可以，
+	并不会影响程序的正常运行，但是如果换成其他的字母代替 T ，在可读性上可能会弱一些。通常情况下，T，E，K，V，？是这样约定的：
+		？表示不确定的 java 类型
+		T (type) 表示具体的一个java类型
+		K V (key value) 分别代表java键值中的Key Value
+		E (element) 代表Element
+		
+？ 通配符
+	1. 上界通配符 < ? extends E>
+	2. 下界通配符 < ? super E>
+	3. ？和 T 的区别
+		List<T> list = new ArrayList<T> // 指定集合中只能是 T 类型
+		LIst<?> list = new ArrayList<?> // 集合中元素可以是任意类型，这种没有意义，只是未来说明用法
+		？和 T 都表示不确定的类型，区别在于我们可以对 T 进行操作，但是对 ？不行。T 是一个 确定的 类型，通常用于泛型类和泛型方法的定义，？是一个 不确定 的类型，
+		通常用于泛型方法的调用代码和形参，不能用于定义类和泛型方法。
+		
+		
+Class< T > 和 Class< ? > 区别
+
+	最常见的是在反射场景下的使用，这里以用一段发射的代码来说明下。
+		// 通过反射的方式生成  multiLimit 
+		// 对象，这里比较明显的是，我们需要使用强制类型转换
+		MultiLimit multiLimit = (MultiLimit)
+		Class.forName("com.glmapper.bridge.boot.generic.MultiLimit").newInstance();
+	Class<T> 在实例化的时候，T 要替换成具体类。Class<?> 它是个通配泛型，? 可以代表任何类型，所以主要用于声明时的限制情况
+		// 可以
+		public Class<?> clazz;
+		// 不可以，因为 T 需要指定类型
+		public Class<T> clazzT;

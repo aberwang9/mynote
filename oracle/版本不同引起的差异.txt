@@ -1,0 +1,8 @@
+select * from v$version;
+1. 
+	"WM_CONCAT": invalid identifier -oracle12.0后无法使用WMSYS_WMCONCAT()函数 使用listagg替代实现功能
+
+	SELECT T .DEPTNO,listagg (T .ENAME, ',') WITHIN GROUP (ORDER BY T .ENAME) names
+	FROM SCOTT.EMP T
+	WHERET .DEPTNO = '20'
+	GROUP BY T .DEPTNO

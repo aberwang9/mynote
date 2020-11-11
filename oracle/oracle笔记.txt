@@ -1,0 +1,8 @@
+
+select * from bd_port b where b.port_cde = 'JII'
+//////////三选一
+select * from bd_port b where b.port_cde = 'JII' and b.is_baseport  != 1;
+select * from bd_port b where b.port_cde = 'JII' and b.is_baseport  = 1;
+select * from bd_port b where b.port_cde = 'JII' and b.is_baseport  is null;
+
+
