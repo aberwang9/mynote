@@ -1,0 +1,8 @@
+https://www.cnblogs.com/lirun/p/9116337.html
+oracle的start with connect by prior是根据条件递归查询"树"，分为四种使用情况：
+
+
+第一种：start with 子节点ID='...' connect by prior 子节点ID = 父节点ID
+第二种：start with 子节点ID='...' connect by 子节点ID = prior 父节点ID
+第三种：start with 父节点ID='...' connect by prior 子节点ID = 父节点ID
+第四种：start with 父节点ID='...' connect by 子节点ID = prior 父节点ID

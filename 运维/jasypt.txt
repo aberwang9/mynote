@@ -1,0 +1,2 @@
+密码加密
+java -cp D:\DTS-repository-coscon\org\jasypt\jasypt\1.9.2\jasypt-1.9.2.jar org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI input="*" password=* algorithm=PBEWithMD5AndDES 

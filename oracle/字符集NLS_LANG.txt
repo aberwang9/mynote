@@ -1,0 +1,30 @@
+影响Oracle数据库字符集最重要的参数是NLS_LANG参数。
+
+它的格式如下: NLS_LANG = language_territory.charset
+它有三个组成部分(语言、地域和字符集)，每个成分控制了NLS子集的特性。
+其中:
+Language： 指定服务器消息的语言， 影响提示信息是中文还是英文
+Territory： 指定服务器的日期和数字格式，
+Charset：  指定字符集。
+
+查看字符集
+select userenv('language') from dual;
+select * from nls_database_parameters
+select * from v$version;
+
+(1).数据库服务器字符集
+select * from nls_database_parameters
+来源于props$，是表示数据库的字符集。
+(2).客户端字符集环境
+select * from nls_instance_parameters
+其来源于v$parameter，表示客户端的字符集的设置，可能是参数文件，环境变量或者是注册表
+(3).会话字符集环境
+select * from nls_session_parameters
+来源于v$nls_parameters，表示会话自己的设置，可能是会话的环境变量或者是alter session完成，如果会话没有特殊的设置，将与nls_instance_parameters一致。
+(4).客户端的字符集要求与服务器一致，才能正确显示数据库的非Ascii字符。
+如果多个设置存在的时候，NLS作用优先级别：Sql function > alter session > 环境变量或注册表 > 参数文件 > 数据库默认参数
+字符集要求一致，但是语言设置却可以不同，语言设置建议用英文。如字符集是zhs16gbk，则nls_lang可以是American_America.zhs16gbk。
+
+修改PL客户端的字符集解决方案：
+	设置windows的环境变量：key : NLS_LANG
+		   	       valve: select userenv('language') from dual;

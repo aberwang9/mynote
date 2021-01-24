@@ -1,0 +1,57 @@
+单例模式
+
+
+tickTime：这个时间是作为 Zookeeper 服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个 tickTime 时间就会发送一个心跳。
+dataDir：顾名思义就是 Zookeeper 保存数据的目录，默认情况下，Zookeeper 将写数据的日志文件也保存在这个目录里。
+dataLogDir：顾名思义就是 Zookeeper 保存日志文件的目录
+clientPort：这个端口就是客户端连接 Zookeeper 服务器的端口，Zookeeper 会监听这个端口，接受客户端的访问请求。
+
+
+集群模式
+
+先将zk考三份
+
+在第一份的zoo.cfg
+# The number of milliseconds of each tick
+tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=E:/zookeeper_study/tmp/zookeeper/data
+# the port at which the clients will connect
+clientPort=2181
+server.1=localhost:2881:3881
+server.2=localhost:2882:3882
+server.3=localhost:2883:3883
+
+第二份的zoo.cfg
+# The number of milliseconds of each tick
+tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=E:/zookeeper_study/tmp/zookeeper/data1
+# the port at which the clients will connect
+clientPort=2182
+server.1=localhost:2881:3881
+server.2=localhost:2882:3882
+server.3=localhost:2883:3883
+
+第三份zoo.cfg
+# The number of milliseconds of each tick
+tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=E:/zookeeper_study/tmp/zookeeper/data2
+# the port at which the clients will connect
+clientPort=2183
+server.1=localhost:2881:3881
+server.2=localhost:2882:3882
+server.3=localhost:2883:3883
+
+server参数说明:
+server.A=B：C：D配置项
+A：这是一个数字，表示这是第几号服务器
+B：A服务器的IP地址
+C：通讯端口，即A服务器与集群中的 Leader 服务器交换信息的端口
+D：选举通讯端口，表示的是万一集群中的 Leader 服务器挂了，需要一个端口来重新进行选举，选出一个新的 Leader，而这个端口就是用来执行选举时服务器相互通信的端口。如果是伪集群的配置方式，由于 B 都是一样，所以不同的 Zookeeper 实例通信端口号不能一样，所以要给它们分配不同的端口号。
+
+然后在每个dataDir目录下建一个myid文件,文件里面就一个数字

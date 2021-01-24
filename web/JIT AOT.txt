@@ -1,0 +1,14 @@
+web的JIT和AOT
+	JIT - Just-In-Time             　　实时编译，即时编译
+	通常所说的JIT的优势是Profile-Based Optimization，也就是边跑边优化，根据运行时信息然后随着时间的推移得到尽可能最优的代码，适用于开发调试。
+
+	AOT - Ahead-Of-Time              预先编译，静态编译
+
+
+
+	AOT与JIT对比有以下优点：
+	在客户端我们不需要导入体积庞大的angular编译器，这样可以减少我们 JS 脚本库的大小。使用 AOT 编译后的应用，不再包含任何 HTML 片段，取而代之的是编译生成的 TypeScript 代码，这样的话 TypeScript 编译器就能提前发现错误。总而言之，采用 AOT 编译模式，我们的模板是类型安全的。适用于部署发布。
+
+
+java的JIT和AOT
+

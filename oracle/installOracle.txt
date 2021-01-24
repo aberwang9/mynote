@@ -8,6 +8,13 @@ https://www.cnblogs.com/pachulia/p/9261721.html
 		cat /proc/cpuinfo			查看cpu信息： 
 		cat /proc/mominfo   		查看cache memory
 		uname -a  					查看linux版本信息
+
+检查依赖包
+rpm -q binutils compat-libcap1 compat-libstdc++-33 gcc gcc-c++ glibc glibc-devel ksh libaio libaio-devel libgcc libstdc++ libstdc++-devel libXext libXtst libX11 libXau libxcb libXi make sysstat 
+
+安装依赖包
+yum -y install compat-libcap1 compat-libstdc++-33 gcc-c++ ksh libaio-devel libstdc++-devel libXext libXtst libX11 libXau libxcb libXi sysstat 
+
 	修改内核参数：
 		vi /etc/sysctl.conf    添加以下内容
 				fs.file-max = 6815744

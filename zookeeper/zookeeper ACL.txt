@@ -1,0 +1,17 @@
+https://www.cnblogs.com/qlqwjy/p/10517231.html
+ACL 权限控制，使用：scheme:id:perm 来标识，主要涵盖 3 个方面：
+　　权限模式（Scheme）：授权的策略
+　　授权对象（ID）:授权的对象
+　　权限（Permission）:授予的权限
+
+其特性如下：
+　　ZooKeeper的权限控制是基于每个znode节点的，需要对每个节点设置权限
+　　每个znode支持设置多种权限控制方案和多个权限
+　　子节点不会继承父节点的权限，客户端无权访问某节点，但可能可以访问它的子节点
+
+例如: setAcl /mydata ip:0.0.0.0:crwda
+CREATE   c 可以创建子节点
+DELETE   d 可以删除子节点（仅下一级节点）
+READ       r 可以读取节点数据及显示子节点列表
+WRITE     w 可以设置节点数据
+ADMIN     a 可以设置节点访问控制列表权限

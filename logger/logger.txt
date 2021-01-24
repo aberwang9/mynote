@@ -1,0 +1,11 @@
+
+常用的日志框架
+SLF4J，全称Simple Logging Facade for Java，即Java简单日志外观框架，顾名思义，它并非具体的日志实现，而是日志外观框架
+java.util.logging，是JDK自带的一个日志实现框架
+Logback，一个流行的日志实现框架
+LOG4J，一个流行的日志实现框架
+
+
+logback 基于slf
+
+Logger中有五个级别：track,debug,info,warn,error

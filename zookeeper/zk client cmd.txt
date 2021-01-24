@@ -1,0 +1,76 @@
+版本 3.6.2 windows10 64
+https://zookeeper.apache.org/doc/r3.6.2/zookeeperCLI.html
+
+
+#开启zookeeper service
+zkServer.cmd
+#开启zookeeper Client
+zkCli.cmd
+#链接指定的多台zookeeper
+zkCli.sh -server hadoop102.yinzhengjie.org.cn:2181,hadoop103.yinzhengjie.org.cn:2181
+e.g : bin/zkCli.sh -timeout 3000 -server remoteIP:2181
+e.g : bin/zkCli.sh -client-configuration /path/to/client.properties
+
+
+##############进入client 之后的命令####################
+
+1. 查看指定路径的znode中所包含的内容
+ls [-s] [-w] path
+s : 查看节点点详细信息
+w : 查看根节点的子节点信息并监控根节点的变化,即对应watch操作。当根节点内容有变化是就会触发watch,注意：仅触发一次。
+e.g: ls -s /
+
+2. 创建znode
+create [-s] [-e] [-t] path value
+s : 创建一个带序列号的znode,该znode的父节点会维护一个序列号,每次创建带有序列号的节点均会使得该序列号自增1。
+e : 创建一个临时znode,当创建该znode的Session会话被关闭(执行quit命令)后,该临时节点自动删除。
+t : ttl 单位s
+e.g: create -s -e /zkSingle/myData
+
+3. 获取znode的数据
+get [-w] path
+w : 获取path该znode存储的数据，与此同时监控该znode的数据，当数据发生修改时会通知该终端，注意:仅触发一次。
+
+4. 修改znode的数据
+set [-s] [-v version] path data
+
+5. 查看节点状态
+stat path
+
+6.删除znode
+delete path  #删除仅没有子节点
+deleteall path
+
+7. 查看历史命令
+history
+
+8. help
+
+9. quota 定额
+
+10. printwatches 
+
+11. version
+
+12. sync 
+sync path
+Sync the data of one node between leader and followers(Asynchronous sync)
+
+
+
+13. stat 
+stat path
+Showing the stat/metadata of one node.
+
+
+14. redo
+Redo the cmd with the index from history.
+
+15. reconfig
+
+16. setAcl 
+setAcl [-R] [-v] 
+R : set Acl recursely
+v : set Acl with the acl version which can be found from the aclVersion using the stat
+
+17. 
